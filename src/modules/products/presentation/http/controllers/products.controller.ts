@@ -19,6 +19,7 @@ import { DeleteProductCommand } from '../../../application/commands/delete-produ
 import { GetProductByIdQuery } from '../../../application/queries/get-product-by-id.query';
 import { GetAllProductsQuery } from '../../../application/queries/get-all-products.query';
 import { GetAvailableProductsQuery } from '../../../application/queries/get-available-products.query';
+import { PaginationDto } from '../../../../../shared/domain/dto/pagination.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -47,27 +48,35 @@ export class ProductsController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllProducts(@Query('includeInactive') includeInactive?: string) {
-    const query = new GetAllProductsQuery(includeInactive === 'true');
-    const products = await this.queryBus.execute(query);
+  async getAllProducts(
+    @Query('includeInactive') includeInactive?: string,
+    @Query() paginationDto?: PaginationDto,
+  ) {
+    const query = new GetAllProductsQuery(
+      includeInactive === 'true',
+      paginationDto?.page || 1,
+      paginationDto?.limit || 10,
+    );
+    const result = await this.queryBus.execute(query);
 
     return {
       message: 'Productos obtenidos exitosamente',
-      data: products,
-      count: products.length,
+      ...result,
     };
   }
 
   @Get('available')
   @HttpCode(HttpStatus.OK)
-  async getAvailableProducts() {
-    const query = new GetAvailableProductsQuery();
-    const products = await this.queryBus.execute(query);
+  async getAvailableProducts(@Query() paginationDto?: PaginationDto) {
+    const query = new GetAvailableProductsQuery(
+      paginationDto?.page || 1,
+      paginationDto?.limit || 10,
+    );
+    const result = await this.queryBus.execute(query);
 
     return {
       message: 'Productos disponibles obtenidos exitosamente',
-      data: products,
-      count: products.length,
+      ...result,
     };
   }
 

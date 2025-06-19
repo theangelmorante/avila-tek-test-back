@@ -262,10 +262,10 @@ Content-Type: application/json
 }
 ```
 
-#### Obtener Todos los Productos
+#### Obtener Todos los Productos (con paginación)
 
 ```http
-GET /products
+GET /products?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
@@ -287,14 +287,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
   ],
-  "count": 1
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 25,
+    "totalPages": 3,
+    "hasNext": true,
+    "hasPrev": false
+  }
 }
 ```
 
-#### Obtener Productos Disponibles
+#### Obtener Productos Disponibles (con paginación)
 
 ```http
-GET /products/available
+GET /products/available?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
@@ -316,7 +323,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
   ],
-  "count": 1
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 15,
+    "totalPages": 2,
+    "hasNext": true,
+    "hasPrev": false
+  }
 }
 ```
 
@@ -422,10 +436,10 @@ Content-Type: application/json
 }
 ```
 
-#### Obtener Historial de Pedidos del Usuario
+#### Obtener Historial de Pedidos del Usuario (con paginación)
 
 ```http
-GET /orders
+GET /orders?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
@@ -461,7 +475,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
   ],
-  "count": 1
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 5,
+    "totalPages": 1,
+    "hasNext": false,
+    "hasPrev": false
+  }
 }
 ```
 
@@ -536,6 +557,56 @@ Content-Type: application/json
 - `SHIPPED` - Enviado
 - `DELIVERED` - Entregado
 - `CANCELLED` - Cancelado
+
+## Paginación
+
+La API implementa paginación en todos los endpoints que devuelven listas:
+
+### Parámetros de Paginación
+
+- `page`: Número de página (por defecto: 1)
+- `limit`: Elementos por página (por defecto: 10, máximo: 100)
+
+### Ejemplo de Uso
+
+```http
+GET /products?page=2&limit=20
+GET /orders?page=1&limit=5
+```
+
+### Respuesta con Paginación
+
+```json
+{
+  "message": "Datos obtenidos exitosamente",
+  "data": [...],
+  "pagination": {
+    "page": 2,
+    "limit": 20,
+    "total": 150,
+    "totalPages": 8,
+    "hasNext": true,
+    "hasPrev": true
+  }
+}
+```
+
+## Optimizaciones de Rendimiento
+
+### Índices de Base de Datos
+
+La API incluye índices optimizados para mejorar el rendimiento:
+
+- **Usuarios**: `email`, `isActive`
+- **Productos**: `isActive`, `isActive + stock`, `createdAt`
+- **Pedidos**: `userId`, `userId + createdAt`, `status`, `createdAt`
+- **Items de Pedido**: `orderId`, `productId`
+
+### Consultas Optimizadas
+
+- **Paginación eficiente**: Uso de `skip` y `take` con índices apropiados
+- **Consultas paralelas**: Conteo y datos en paralelo para mejor rendimiento
+- **Relaciones optimizadas**: Carga eficiente de datos relacionados
 
 ## Estructura del Proyecto
 
@@ -688,8 +759,8 @@ src/
 - [x] Crear productos con nombre, descripción, precio y stock
 - [x] Actualizar productos (parcial o completo)
 - [x] Eliminar productos
-- [x] Listar todos los productos (activos/inactivos)
-- [x] Listar productos disponibles (activos con stock > 0)
+- [x] Listar todos los productos (activos/inactivos) con paginación
+- [x] Listar productos disponibles (activos con stock > 0) con paginación
 - [x] Obtener producto por ID
 - [x] Validación de datos con class-validator
 - [x] Control de disponibilidad de stock
@@ -699,12 +770,30 @@ src/
 - [x] Crear pedidos con múltiples productos
 - [x] Validación de stock en tiempo real
 - [x] Actualización automática de inventario
-- [x] Historial de pedidos por usuario
+- [x] Historial de pedidos por usuario con paginación
 - [x] Obtener pedido específico por ID
 - [x] Actualizar estado de pedidos
 - [x] Estados de pedido: PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
 - [x] Cálculo automático de totales
 - [x] Validación de propiedad de pedidos (solo el propietario puede ver/modificar)
+
+### ✅ Escalabilidad y Eficiencia
+
+- [x] **Paginación completa** en todos los listados
+- [x] **Índices de base de datos** optimizados para consultas frecuentes
+- [x] **Consultas paralelas** para mejor rendimiento
+- [x] **Arquitectura modular** que permite escalar horizontalmente
+- [x] **CQRS** que separa operaciones de lectura y escritura
+- [x] **Validación de límites** para prevenir sobrecarga
+
+### ✅ Almacenamiento y Gestión de Datos
+
+- [x] **PostgreSQL** como base de datos principal
+- [x] **Esquemas bien definidos** con relaciones entre entidades
+- [x] **Integridad referencial** con claves foráneas
+- [x] **Migraciones automáticas** con Prisma
+- [x] **Validaciones a nivel de base de datos**
+- [x] **Consistencia de datos** garantizada por transacciones
 
 ### ✅ Arquitectura Hexagonal
 
@@ -738,6 +827,9 @@ src/
 5. **Monitoreo**: Métricas y health checks
 6. **Pagos**: Integración con pasarelas de pago
 7. **Notificaciones**: Sistema de notificaciones por email/SMS
+8. **Caché**: Implementación de Redis para consultas frecuentes
+9. **CDN**: Para imágenes y assets estáticos
+10. **Load Balancing**: Para distribución de carga
 
 ## Support
 

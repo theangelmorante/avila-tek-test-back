@@ -12,19 +12,24 @@ export class GetAvailableProductsHandler
     private readonly productRepository: IProductRepository,
   ) {}
 
-  async execute(query: GetAvailableProductsQuery): Promise<any[]> {
-    const products = await this.productRepository.findAvailable();
+  async execute(query: GetAvailableProductsQuery): Promise<any> {
+    const { page, limit } = query;
 
-    return products.map((product) => ({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      stock: product.stock,
-      isActive: product.isActive,
-      isAvailable: product.isAvailable(),
-      createdAt: product.createdAt,
-      updatedAt: product.updatedAt,
-    }));
+    const result = await this.productRepository.findAvailable(page, limit);
+
+    return {
+      data: result.data.map((product) => ({
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        isActive: product.isActive,
+        isAvailable: product.isAvailable(),
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+      })),
+      pagination: result.pagination,
+    };
   }
 }

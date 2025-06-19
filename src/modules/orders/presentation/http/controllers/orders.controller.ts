@@ -5,6 +5,7 @@ import {
   Put,
   Body,
   Param,
+  Query,
   HttpCode,
   HttpStatus,
   Request,
@@ -16,6 +17,7 @@ import { CreateOrderCommand } from '../../../application/commands/create-order.c
 import { UpdateOrderStatusCommand } from '../../../application/commands/update-order-status.command';
 import { GetOrderByIdQuery } from '../../../application/queries/get-order-by-id.query';
 import { GetUserOrdersQuery } from '../../../application/queries/get-user-orders.query';
+import { PaginationDto } from '../../../../../shared/domain/dto/pagination.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -43,16 +45,22 @@ export class OrdersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getUserOrders(@Request() req: any) {
+  async getUserOrders(
+    @Request() req: any,
+    @Query() paginationDto?: PaginationDto,
+  ) {
     const userId = req.user.id;
 
-    const query = new GetUserOrdersQuery(userId);
-    const orders = await this.queryBus.execute(query);
+    const query = new GetUserOrdersQuery(
+      userId,
+      paginationDto?.page || 1,
+      paginationDto?.limit || 10,
+    );
+    const result = await this.queryBus.execute(query);
 
     return {
       message: 'Pedidos obtenidos exitosamente',
-      data: orders,
-      count: orders.length,
+      ...result,
     };
   }
 

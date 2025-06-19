@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../shared/infrastructure/prisma/prisma.service';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { Product } from '../../domain/entities/product.entity';
+import { PaginatedResult } from '../../../../shared/domain/dto/pagination.dto';
 
 @Injectable()
 export class PrismaProductRepository implements IProductRepository {
@@ -28,51 +29,100 @@ export class PrismaProductRepository implements IProductRepository {
     );
   }
 
-  async findAll(includeInactive: boolean = false): Promise<Product[]> {
+  async findAll(
+    includeInactive: boolean = false,
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<PaginatedResult<Product>> {
     const where = includeInactive ? {} : { isActive: true };
+    const offset = (page - 1) * limit;
 
-    const products = await this.prisma.product.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip: offset,
+        take: limit,
+      }),
+      this.prisma.product.count({ where }),
+    ]);
 
-    return products.map(
-      (product) =>
-        new Product(
-          product.id,
-          product.name,
-          product.description,
-          Number(product.price),
-          product.stock,
-          product.isActive,
-          product.createdAt,
-          product.updatedAt,
-        ),
-    );
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: products.map(
+        (product) =>
+          new Product(
+            product.id,
+            product.name,
+            product.description,
+            Number(product.price),
+            product.stock,
+            product.isActive,
+            product.createdAt,
+            product.updatedAt,
+          ),
+      ),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
   }
 
-  async findAvailable(): Promise<Product[]> {
-    const products = await this.prisma.product.findMany({
-      where: {
-        isActive: true,
-        stock: { gt: 0 },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAvailable(
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<PaginatedResult<Product>> {
+    const offset = (page - 1) * limit;
 
-    return products.map(
-      (product) =>
-        new Product(
-          product.id,
-          product.name,
-          product.description,
-          Number(product.price),
-          product.stock,
-          product.isActive,
-          product.createdAt,
-          product.updatedAt,
-        ),
-    );
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where: {
+          isActive: true,
+          stock: { gt: 0 },
+        },
+        orderBy: { createdAt: 'desc' },
+        skip: offset,
+        take: limit,
+      }),
+      this.prisma.product.count({
+        where: {
+          isActive: true,
+          stock: { gt: 0 },
+        },
+      }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data: products.map(
+        (product) =>
+          new Product(
+            product.id,
+            product.name,
+            product.description,
+            Number(product.price),
+            product.stock,
+            product.isActive,
+            product.createdAt,
+            product.updatedAt,
+          ),
+      ),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+    };
   }
 
   async save(product: Product): Promise<Product> {

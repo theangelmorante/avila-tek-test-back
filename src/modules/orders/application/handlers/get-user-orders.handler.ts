@@ -10,26 +10,29 @@ export class GetUserOrdersHandler implements IQueryHandler<GetUserOrdersQuery> {
     private readonly orderRepository: IOrderRepository,
   ) {}
 
-  async execute(query: GetUserOrdersQuery): Promise<any[]> {
-    const { userId } = query;
+  async execute(query: GetUserOrdersQuery): Promise<any> {
+    const { userId, page, limit } = query;
 
-    const orders = await this.orderRepository.findByUserId(userId);
+    const result = await this.orderRepository.findByUserId(userId, page, limit);
 
-    return orders.map((order) => ({
-      id: order.id,
-      userId: order.userId,
-      status: order.status,
-      totalAmount: order.totalAmount,
-      itemCount: order.getItemCount(),
-      orderItems: order.orderItems.map((item) => ({
-        id: item.id,
-        productId: item.productId,
-        quantity: item.quantity,
-        price: item.price,
-        subtotal: item.subtotal,
+    return {
+      data: result.data.map((order) => ({
+        id: order.id,
+        userId: order.userId,
+        status: order.status,
+        totalAmount: order.totalAmount,
+        itemCount: order.getItemCount(),
+        orderItems: order.orderItems.map((item) => ({
+          id: item.id,
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+          subtotal: item.subtotal,
+        })),
+        createdAt: order.createdAt,
+        updatedAt: order.updatedAt,
       })),
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt,
-    }));
+      pagination: result.pagination,
+    };
   }
 }
