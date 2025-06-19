@@ -233,6 +233,310 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
+### Productos (`/products`)
+
+#### Crear Producto
+
+```http
+POST /products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "name": "Laptop Gaming",
+  "description": "Laptop de alto rendimiento para gaming",
+  "price": 1299.99,
+  "stock": 10
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Producto creado exitosamente",
+  "data": {
+    "id": "clx1234567890",
+    "name": "Laptop Gaming"
+  }
+}
+```
+
+#### Obtener Todos los Productos
+
+```http
+GET /products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Productos obtenidos exitosamente",
+  "data": [
+    {
+      "id": "clx1234567890",
+      "name": "Laptop Gaming",
+      "description": "Laptop de alto rendimiento para gaming",
+      "price": 1299.99,
+      "stock": 10,
+      "isActive": true,
+      "isAvailable": true,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "count": 1
+}
+```
+
+#### Obtener Productos Disponibles
+
+```http
+GET /products/available
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Productos disponibles obtenidos exitosamente",
+  "data": [
+    {
+      "id": "clx1234567890",
+      "name": "Laptop Gaming",
+      "description": "Laptop de alto rendimiento para gaming",
+      "price": 1299.99,
+      "stock": 10,
+      "isActive": true,
+      "isAvailable": true,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "count": 1
+}
+```
+
+#### Obtener Producto por ID
+
+```http
+GET /products/clx1234567890
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Producto obtenido exitosamente",
+  "data": {
+    "id": "clx1234567890",
+    "name": "Laptop Gaming",
+    "description": "Laptop de alto rendimiento para gaming",
+    "price": 1299.99,
+    "stock": 10,
+    "isActive": true,
+    "isAvailable": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+#### Actualizar Producto
+
+```http
+PUT /products/clx1234567890
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "name": "Laptop Gaming Pro",
+  "price": 1499.99,
+  "stock": 5
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Producto actualizado exitosamente",
+  "data": {
+    "id": "clx1234567890",
+    "name": "Laptop Gaming Pro"
+  }
+}
+```
+
+#### Eliminar Producto
+
+```http
+DELETE /products/clx1234567890
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Producto eliminado exitosamente"
+}
+```
+
+### Pedidos (`/orders`)
+
+#### Crear Pedido
+
+```http
+POST /orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": "clx1234567890",
+      "quantity": 2
+    },
+    {
+      "productId": "clx0987654321",
+      "quantity": 1
+    }
+  ]
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Pedido creado exitosamente",
+  "data": {
+    "id": "clxabcdef1234",
+    "totalAmount": 2599.98
+  }
+}
+```
+
+#### Obtener Historial de Pedidos del Usuario
+
+```http
+GET /orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Pedidos obtenidos exitosamente",
+  "data": [
+    {
+      "id": "clxabcdef1234",
+      "userId": "clx1234567890",
+      "status": "PENDING",
+      "totalAmount": 2599.98,
+      "itemCount": 3,
+      "orderItems": [
+        {
+          "id": "clxitem123",
+          "productId": "clx1234567890",
+          "quantity": 2,
+          "price": 1299.99,
+          "subtotal": 2599.98
+        },
+        {
+          "id": "clxitem456",
+          "productId": "clx0987654321",
+          "quantity": 1,
+          "price": 999.99,
+          "subtotal": 999.99
+        }
+      ],
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "count": 1
+}
+```
+
+#### Obtener Pedido por ID
+
+```http
+GET /orders/clxabcdef1234
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Pedido obtenido exitosamente",
+  "data": {
+    "id": "clxabcdef1234",
+    "userId": "clx1234567890",
+    "status": "PENDING",
+    "totalAmount": 2599.98,
+    "itemCount": 3,
+    "orderItems": [
+      {
+        "id": "clxitem123",
+        "productId": "clx1234567890",
+        "quantity": 2,
+        "price": 1299.99,
+        "subtotal": 2599.98
+      },
+      {
+        "id": "clxitem456",
+        "productId": "clx0987654321",
+        "quantity": 1,
+        "price": 999.99,
+        "subtotal": 999.99
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+#### Actualizar Estado del Pedido
+
+```http
+PUT /orders/clxabcdef1234/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+
+{
+  "status": "CONFIRMED"
+}
+```
+
+**Respuesta:**
+
+```json
+{
+  "message": "Estado del pedido actualizado exitosamente",
+  "data": {
+    "id": "clxabcdef1234",
+    "status": "CONFIRMED"
+  }
+}
+```
+
+**Estados Disponibles:**
+
+- `PENDING` - Pendiente
+- `CONFIRMED` - Confirmado
+- `SHIPPED` - Enviado
+- `DELIVERED` - Entregado
+- `CANCELLED` - Cancelado
+
 ## Estructura del Proyecto
 
 ```
@@ -264,31 +568,97 @@ src/
 │   │           └── dto/
 │   │               ├── register-user.dto.ts
 │   │               └── login-user.dto.ts
-│   └── users/
+│   ├── users/
+│   │   ├── application/
+│   │   │   ├── commands/
+│   │   │   │   └── create-user.command.ts
+│   │   │   ├── queries/
+│   │   │   │   ├── get-user-by-id.query.ts
+│   │   │   │   └── get-user-by-email.query.ts
+│   │   │   └── handlers/
+│   │   │       ├── create-user.handler.ts
+│   │   │       ├── get-user-by-id.handler.ts
+│   │   │       └── get-user-by-email.handler.ts
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── user.entity.ts
+│   │   │   ├── repositories/
+│   │   │   │   └── user.repository.interface.ts
+│   │   │   └── tokens.ts
+│   │   ├── infrastructure/
+│   │   │   └── persistence/
+│   │   │       └── prisma-user.repository.ts
+│   │   └── presentation/
+│   │       └── http/
+│   │           └── controllers/
+│   │               └── users.controller.ts
+│   ├── products/
+│   │   ├── application/
+│   │   │   ├── commands/
+│   │   │   │   ├── create-product.command.ts
+│   │   │   │   ├── update-product.command.ts
+│   │   │   │   └── delete-product.command.ts
+│   │   │   ├── queries/
+│   │   │   │   ├── get-product-by-id.query.ts
+│   │   │   │   ├── get-all-products.query.ts
+│   │   │   │   └── get-available-products.query.ts
+│   │   │   └── handlers/
+│   │   │       ├── create-product.handler.ts
+│   │   │       ├── update-product.handler.ts
+│   │   │       ├── delete-product.handler.ts
+│   │   │       ├── get-product-by-id.handler.ts
+│   │   │       ├── get-all-products.handler.ts
+│   │   │       └── get-available-products.handler.ts
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── product.entity.ts
+│   │   │   ├── repositories/
+│   │   │   │   └── product.repository.interface.ts
+│   │   │   └── tokens.ts
+│   │   ├── infrastructure/
+│   │   │   └── persistence/
+│   │   │       └── prisma-product.repository.ts
+│   │   └── presentation/
+│   │       └── http/
+│   │           ├── controllers/
+│   │           │   └── products.controller.ts
+│   │           └── dto/
+│   │               ├── create-product.dto.ts
+│   │               └── update-product.dto.ts
+│   └── orders/
 │       ├── application/
 │       │   ├── commands/
-│       │   │   └── create-user.command.ts
+│       │   │   ├── create-order.command.ts
+│       │   │   └── update-order-status.command.ts
 │       │   ├── queries/
-│       │   │   ├── get-user-by-id.query.ts
-│       │   │   └── get-user-by-email.query.ts
+│       │   │   ├── get-order-by-id.query.ts
+│       │   │   └── get-user-orders.query.ts
 │       │   └── handlers/
-│       │       ├── create-user.handler.ts
-│       │       ├── get-user-by-id.handler.ts
-│       │       └── get-user-by-email.handler.ts
+│       │       ├── create-order.handler.ts
+│       │       ├── update-order-status.handler.ts
+│       │       ├── get-order-by-id.handler.ts
+│       │       └── get-user-orders.handler.ts
 │       ├── domain/
 │       │   ├── entities/
-│       │   │   └── user.entity.ts
+│       │   │   ├── order.entity.ts
+│       │   │   └── order-item.entity.ts
 │       │   ├── repositories/
-│       │   │   └── user.repository.interface.ts
+│       │   │   └── order.repository.interface.ts
 │       │   └── tokens.ts
 │       ├── infrastructure/
 │       │   └── persistence/
-│       │       └── prisma-user.repository.ts
+│       │       └── prisma-order.repository.ts
 │       └── presentation/
 │           └── http/
-│               └── controllers/
-│                   └── users.controller.ts
+│               ├── controllers/
+│               │   └── orders.controller.ts
+│               └── dto/
+│                   ├── create-order.dto.ts
+│                   └── update-order-status.dto.ts
 ├── shared/
+│   ├── domain/
+│   │   └── decorators/
+│   │       └── public.decorator.ts
 │   └── infrastructure/
 │       └── prisma/
 │           └── prisma.service.ts
@@ -313,6 +683,29 @@ src/
 - [x] Endpoint de perfil de usuario
 - [x] Separación de responsabilidades entre módulos
 
+### ✅ Gestión de Inventario de Productos
+
+- [x] Crear productos con nombre, descripción, precio y stock
+- [x] Actualizar productos (parcial o completo)
+- [x] Eliminar productos
+- [x] Listar todos los productos (activos/inactivos)
+- [x] Listar productos disponibles (activos con stock > 0)
+- [x] Obtener producto por ID
+- [x] Validación de datos con class-validator
+- [x] Control de disponibilidad de stock
+
+### ✅ Procesamiento de Pedidos de Clientes
+
+- [x] Crear pedidos con múltiples productos
+- [x] Validación de stock en tiempo real
+- [x] Actualización automática de inventario
+- [x] Historial de pedidos por usuario
+- [x] Obtener pedido específico por ID
+- [x] Actualizar estado de pedidos
+- [x] Estados de pedido: PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
+- [x] Cálculo automático de totales
+- [x] Validación de propiedad de pedidos (solo el propietario puede ver/modificar)
+
 ### ✅ Arquitectura Hexagonal
 
 - [x] Separación clara de capas (Domain, Application, Infrastructure, Presentation)
@@ -322,8 +715,8 @@ src/
 
 ### ✅ CQRS
 
-- [x] Comandos para operaciones de escritura (registro, login, creación de usuarios)
-- [x] Consultas para operaciones de lectura (perfil, búsqueda de usuarios)
+- [x] Comandos para operaciones de escritura (registro, login, CRUD de productos, pedidos)
+- [x] Consultas para operaciones de lectura (perfil, búsqueda de productos, historial de pedidos)
 - [x] Handlers especializados para cada operación
 - [x] Comunicación entre módulos a través de CommandBus/QueryBus
 
@@ -334,16 +727,17 @@ src/
 - [x] Tokens JWT con expiración
 - [x] Protección automática de rutas sensibles
 - [x] Endpoints públicos controlados
+- [x] Validación de propiedad de recursos
 
 ## Próximos Pasos
 
-1. **Gestión de Inventario**: CRUD de productos
-2. **Procesamiento de Pedidos**: Creación y gestión de órdenes
-3. **Gestión de Clientes**: Información adicional de usuarios
-4. **Tests**: Unitarios e integración
-5. **Documentación**: Swagger/OpenAPI
-6. **Logging**: Sistema de logs estructurados
-7. **Monitoreo**: Métricas y health checks
+1. **Gestión de Clientes**: Información adicional de usuarios
+2. **Tests**: Unitarios e integración
+3. **Documentación**: Swagger/OpenAPI
+4. **Logging**: Sistema de logs estructurados
+5. **Monitoreo**: Métricas y health checks
+6. **Pagos**: Integración con pasarelas de pago
+7. **Notificaciones**: Sistema de notificaciones por email/SMS
 
 ## Support
 
