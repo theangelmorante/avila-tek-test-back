@@ -14,24 +14,24 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    // Verificar si el endpoint está marcado como público
+    // Check if the endpoint is marked as public
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
-    // Si es público, permitir acceso sin autenticación
+    // If it is public, allow access without authentication
     if (isPublic) {
       return true;
     }
 
-    // Si no es público, aplicar la autenticación JWT
+    // If it is not public, apply the JWT authentication
     return super.canActivate(context);
   }
 
   handleRequest(err: any, user: any) {
     if (err || !user) {
-      throw err || new UnauthorizedException('Token inválido o expirado');
+      throw err || new UnauthorizedException('Invalid or expired token');
     }
     return user;
   }

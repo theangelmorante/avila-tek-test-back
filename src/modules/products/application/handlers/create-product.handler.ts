@@ -19,19 +19,19 @@ export class CreateProductHandler
   async execute(
     command: CreateProductCommand,
   ): Promise<{ id: string; name: string }> {
-    this.logger.log(`Ejecutando comando CreateProductCommand: ${command.name}`);
+    this.logger.log(`Executing CreateProductCommand: ${command.name}`);
 
     const { name, description, price, stock } = command;
 
-    // Crear el producto
+    // Create the product
     const product = Product.create(name, description, price, stock);
 
     try {
-      // Guardar el producto
+      // Save the product
       const savedProduct = await this.productRepository.save(product);
 
       this.logger.log(
-        `Producto creado exitosamente: ${savedProduct.id} - ${savedProduct.name}`,
+        `Product created successfully: ${savedProduct.id} - ${savedProduct.name}`,
       );
 
       return {
@@ -40,7 +40,7 @@ export class CreateProductHandler
       };
     } catch (error) {
       this.logger.error(
-        `Error al crear producto: ${error.message}`,
+        `Error creating product: ${error.message}`,
         error.stack,
       );
       throw error;

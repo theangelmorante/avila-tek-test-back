@@ -1,12 +1,20 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Inject,
+  Logger,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UpdateOrderStatusCommand } from '../commands/update-order-status.command';
 import { IOrderRepository } from '../../domain/repositories/order.repository.interface';
 import { ORDER_REPOSITORY } from '../../domain/tokens';
 
+@CommandHandler(UpdateOrderStatusCommand)
 export class UpdateOrderStatusHandler
   implements ICommandHandler<UpdateOrderStatusCommand>
 {
+  private readonly logger = new Logger(UpdateOrderStatusHandler.name);
+
   constructor(
     @Inject(ORDER_REPOSITORY)
     private readonly orderRepository: IOrderRepository,

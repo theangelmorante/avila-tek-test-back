@@ -7,8 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface StandardResponse<T> {
   success: boolean;
@@ -18,6 +17,7 @@ export interface StandardResponse<T> {
   timestamp: string;
   path: string;
   method: string;
+  pagination?: any;
 }
 
 export interface ErrorResponse {
@@ -113,6 +113,7 @@ export class ResponseInterceptor<T>
             code: statusCode,
             message: data.message,
             data: data.data,
+            pagination: data.pagination,
             timestamp,
             path: url,
             method,
@@ -130,31 +131,6 @@ export class ResponseInterceptor<T>
           path: url,
           method,
         };
-      }),
-      catchError((error) => {
-        const statusCode = error.status || HttpStatus.INTERNAL_SERVER_ERROR;
-        const message = this.getErrorMessage(statusCode);
-        const errorMessage = error.message || 'Unknown error';
-
-        this.logger.error(
-          `Error in ${method} ${url}: ${errorMessage}`,
-          error.stack,
-        );
-
-        const errorResponse: ErrorResponse = {
-          success: false,
-          code: statusCode,
-          message,
-          error: errorMessage,
-          timestamp,
-          path: url,
-          method,
-        };
-
-        return throwError(() => ({
-          ...errorResponse,
-          statusCode,
-        }));
       }),
     );
   }

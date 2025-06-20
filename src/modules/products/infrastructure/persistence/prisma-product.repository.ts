@@ -126,6 +126,10 @@ export class PrismaProductRepository implements IProductRepository {
   }
 
   async save(product: Product): Promise<Product> {
+    if (product.id) {
+      return this.update(product);
+    }
+
     const savedProduct = await this.prisma.product.create({
       data: {
         name: product.name,

@@ -4,6 +4,7 @@ import { GetUserOrdersQuery } from '../queries/get-user-orders.query';
 import { IOrderRepository } from '../../domain/repositories/order.repository.interface';
 import { ORDER_REPOSITORY } from '../../domain/tokens';
 
+@QueryHandler(GetUserOrdersQuery)
 export class GetUserOrdersHandler implements IQueryHandler<GetUserOrdersQuery> {
   constructor(
     @Inject(ORDER_REPOSITORY)

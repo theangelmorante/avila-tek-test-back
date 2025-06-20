@@ -1,10 +1,10 @@
-import { ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { ConflictException, Inject } from '@nestjs/common';
 import { CreateUserCommand } from '../commands/create-user.command';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { User } from '../../domain/entities/user.entity';
 import { USER_REPOSITORY } from '../../domain/tokens';
-
+@CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
     @Inject(USER_REPOSITORY)
@@ -16,16 +16,16 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   ): Promise<{ id: string; email: string }> {
     const { email, password, firstName, lastName } = command;
 
-    // Verificar si el usuario ya existe
+    // Check if the user already exists
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {
-      throw new ConflictException('El usuario ya existe con este email');
+      throw new ConflictException('The user already exists with this email');
     }
 
-    // Crear el usuario (la contraseña ya debe venir hasheada desde el módulo de auth)
+    // Create the user (the password must be hashed from the auth module)
     const user = User.create(email, password, firstName, lastName);
 
-    // Guardar el usuario
+    // Save the user
     const savedUser = await this.userRepository.save(user);
 
     return {

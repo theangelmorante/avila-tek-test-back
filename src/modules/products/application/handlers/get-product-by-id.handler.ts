@@ -4,6 +4,7 @@ import { GetProductByIdQuery } from '../queries/get-product-by-id.query';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@QueryHandler(GetProductByIdQuery)
 export class GetProductByIdHandler
   implements IQueryHandler<GetProductByIdQuery>
 {
@@ -17,7 +18,7 @@ export class GetProductByIdHandler
 
     const product = await this.productRepository.findById(id);
     if (!product) {
-      throw new NotFoundException('Producto no encontrado');
+      throw new NotFoundException('Order not found');
     }
 
     return {

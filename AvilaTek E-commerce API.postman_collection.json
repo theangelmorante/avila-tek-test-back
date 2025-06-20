@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "6f51fbba-ab1f-470b-865c-d59f69c41e6c",
+		"name": "AvilaTek E-commerce API",
+		"description": "Colección para probar la API de AvilaTek E-commerce. Incluye registro, login, productos y órdenes.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3549602"
+	},
+	"item": [
+		{
+			"name": "Auth - Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"testuser@avilatek.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/auth/register",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth - Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();",
+							"if (json.data && json.data.token) {",
+							"    pm.collectionVariables.set('jwt', json.data.token);",
+							"    pm.environment.set('jwt', json.data.token);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"testuser@avilatek.com\",\n  \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/auth/login",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/users/cmc4wuo0q0000y469z0zg8cnv",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"users",
+						"cmc4wuo0q0000y469z0zg8cnv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Laptop Gaming\",\n  \"description\": \"Laptop de alto rendimiento\",\n  \"price\": 1299.99,\n  \"stock\": 10\n}"
+				},
+				"url": {
+					"raw": "{{host}}/products",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - List All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/products",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - List Available",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/products/available",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products",
+						"available"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - Create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\n    { \"productId\": \"cmc4ygkdi0000y4nxenihum5d\", \"quantity\": 1 }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{host}}/orders",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - List My Orders",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/orders",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"price\": 200.99,\n  \"stock\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/products/cmc4ytixx000ay4m1iq5gv6q8",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products",
+						"cmc4ytixx000ay4m1iq5gv6q8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/products/cmc4yhl0y0000y40dqlbrxvzb",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products",
+						"cmc4yhl0y0000y40dqlbrxvzb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/orders/cmc4ytiy7000cy4m1qaut6p84",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders",
+						"cmc4ytiy7000cy4m1qaut6p84"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"CANCELLED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/orders/cmc4z1tz90005y4sp0k1kuoa9/status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders",
+						"cmc4z1tz90005y4sp0k1kuoa9",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "jwt",
+			"value": ""
+		}
+	]
+}

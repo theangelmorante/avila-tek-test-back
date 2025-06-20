@@ -4,6 +4,7 @@ import { GetAvailableProductsQuery } from '../queries/get-available-products.que
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@QueryHandler(GetAvailableProductsQuery)
 export class GetAvailableProductsHandler
   implements IQueryHandler<GetAvailableProductsQuery>
 {

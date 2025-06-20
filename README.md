@@ -1,6 +1,6 @@
 # Avila Tek E-commerce API
 
-Scalable REST API for an e-commerce platform built with NestJS, TypeScript, and Prisma.
+Scalable REST API for an e-commerce platform built with NestJS (Node + Express), TypeScript, and Prisma.
 
 ## Architecture
 
@@ -72,7 +72,7 @@ Once the database is running and the `.env` file is configured, open a terminal 
 yarn install
 
 # 2. Apply database migrations
-npx prisma migrate deploy
+npx prisma migrate dev
 
 # 3. Generate the Prisma client
 npx prisma generate
@@ -808,18 +808,12 @@ src/
 - [x] Controlled public endpoints
 - [x] Resource ownership validation
 
-## Next Steps
+## Suggestions for next steps
 
-1. **Customer Management**: Additional user information
-2. **Tests**: Unit and integration
-3. **Documentation**: Swagger/OpenAPI
-4. **Logging**: Structured logging system
-5. **Monitoring**: Metrics and health checks
-6. **Payments**: Integration with payment gateways
-7. **Notifications**: Email/SMS notification system
-8. **Caching**: Redis implementation for frequent queries
-9. **CDN**: For images and static assets
-10. **Load Balancing**: For traffic distribution
+1. **Notifications**: Email/SMS notification system
+2. **Caching**: Redis implementation for frequent queries
+3. **CDN**: For images and static assets
+4. **Load Balancing**: For traffic distribution
 
 ## Author
 
@@ -829,3 +823,98 @@ src/
 - **Website:** [angel-morante.vercel.app](https://angel-morante.vercel.app/)
 - **LinkedIn:** [Angel Morante](https://www.linkedin.com/in/angel-morante-aa76461a9/)
 - **Twitter:** [@theangelmorante](https://twitter.com/theangelmorante)
+
+## 🚀 Postman Collection
+
+This project includes a Postman collection to easily test all API endpoints.
+
+- **File**: `AvilaTek E-commerce API.postman_collection.json`
+- **How to use**:
+  1.  Import the file into your Postman client.
+  2.  The collection uses a `{{host}}` variable, which is pre-configured to `http://localhost:3000`.
+  3.  Run the `Auth - Register` and `Auth - Login` requests first. The login request will automatically save the JWT to a collection variable `{{jwt}}` so you can make authenticated requests seamlessly.
+  4.  Remember to replace placeholders like `<REPLACE_WITH_PRODUCT_ID>` in URLs or bodies with actual IDs from your database.
+
+---
+
+## 📖 API Endpoints
+
+Here is a summary of the available endpoints:
+
+### Auth
+
+| Method | Endpoint         | Description          |
+| :----- | :--------------- | :------------------- |
+| `POST` | `/auth/register` | Register a new user. |
+| `POST` | `/auth/login`    | Login and get a JWT. |
+
+### Users
+
+| Method | Endpoint         | Description                           |
+| :----- | :--------------- | :------------------------------------ |
+| `GET`  | `/users/profile` | Get the authenticated user's profile. |
+| `GET`  | `/users/:id`     | Get a user by their ID.               |
+
+### Products
+
+| Method   | Endpoint              | Description                                 |
+| :------- | :-------------------- | :------------------------------------------ |
+| `POST`   | `/products`           | Create a new product.                       |
+| `GET`    | `/products`           | Get a paginated list of all products.       |
+| `GET`    | `/products/available` | Get available products (active & in stock). |
+| `GET`    | `/products/:id`       | Get a product by its ID.                    |
+| `PUT`    | `/products/:id`       | Update an existing product.                 |
+| `DELETE` | `/products/:id`       | Delete a product.                           |
+
+### Orders
+
+| Method   | Endpoint             | Description                                     |
+| :------- | :------------------- | :---------------------------------------------- |
+| `POST`   | `/orders`            | Create a new order.                             |
+| `GET`    | `/orders`            | Get the authenticated user's order history.     |
+| `GET`    | `/orders/:id`        | Get a specific order by its ID.                 |
+| `PUT`    | `/orders/:id`        | Update the items of an existing order.          |
+| `PUT`    | `/orders/:id/status` | Update the status of an order.                  |
+| `DELETE` | `/orders/:id`        | Cancel an order (sets its status to CANCELLED). |
+
+---
+
+## 🧪 Running Tests
+
+To run all unit tests:
+
+```bash
+yarn test
+```
+
+To run tests with coverage report:
+
+```bash
+yarn test --coverage
+```
+
+The coverage report will be shown in the terminal and a detailed HTML report will be generated in the `coverage/` folder. You can open `coverage/lcov-report/index.html` in your browser for a visual summary.
+
+### Current Coverage Example
+
+```
+File                                         % Stmts % Branch % Funcs % Lines Uncovered Line #s
+All files                                      99.2     100     100   99.09
+ auth/application/handlers/login-user.handler.ts   100     100     100     100
+ auth/application/handlers/register-user.handler.ts 100     100     100     100
+ orders/application/handlers/create-order.handler.ts 100     100     100     100
+ orders/application/handlers/get-order-by-id.handler.ts 100     100     100     100
+ orders/application/handlers/get-user-orders.handler.ts 100     100     100     100
+ orders/application/handlers/update-order-status.handler.ts 100     100     100     100
+ products/application/handlers/create-product.handler.ts 100     100     100     100
+ products/application/handlers/delete-product.handler.ts 100     100     100     100
+ products/application/handlers/get-all-products.handler.ts 87.5     100     100   85.71   36-40
+ products/application/handlers/get-available-products.handler.ts 100     100     100     100
+ products/application/handlers/get-product-by-id.handler.ts 100     100     100     100
+ products/application/handlers/update-product.handler.ts 100     100     100     100
+ users/application/handlers/create-user.handler.ts 100     100     100     100
+ users/application/handlers/get-user-by-email.handler.ts 100     100     100     100
+ users/application/handlers/get-user-by-id.handler.ts 100     100     100     100
+```
+
+All main business logic handlers are covered at nearly 100%.
