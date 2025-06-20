@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank"><img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.linkedin.com%2Fcompany%2Favilatek&psig=AOvVaw3J7nC30VBjc0pEse0O35eC&ust=1750510578619000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLig-ZyGgI4DFQAAAAAdAAAAABAE" width="120" alt="Nest Logo" /></a>
 </p>
 
 [circleci-image]: https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.linkedin.com%2Fcompany%2Favilatek&psig=AOvVaw3J7nC30VBjc0pEse0O35eC&ust=1750510578619000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLig-ZyGgI4DFQAAAAAdAAAAABAE
@@ -88,7 +88,15 @@ npx prisma generate
 yarn start:dev
 ```
 
-The application will be available at `http://localhost:3000`, and the Swagger documentation at `http://localhost:3000/api/docs`.
+The application will be available at `http://localhost:3000`.
+
+## API Documentation
+
+The API documentation is generated using Swagger and is available at:
+
+- **Swagger UI:** [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+
+Once the application is running, you can access this URL to view all available endpoints, test them, and see the request/response models.
 
 ## Authentication and Authorization
 
