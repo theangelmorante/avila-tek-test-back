@@ -17,32 +17,30 @@ async function bootstrap() {
       logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     });
 
-    // Configurar pipes globales
+    // Configure global pipes
     app.useGlobalPipes(new CustomValidationPipe());
 
-    // Configurar filtro de excepciones global
+    // Configure global exception filter
     app.useGlobalFilters(new GlobalExceptionFilter());
 
-    // Configurar interceptor de respuesta global
+    // Configure global response interceptor
     app.useGlobalInterceptors(new ResponseInterceptor());
 
-    // Configurar CORS
+    // Configure CORS
     app.enableCors({
       origin: true,
       credentials: true,
     });
 
-    // Configurar Swagger
+    // Configure Swagger
     const config = new DocumentBuilder()
       .setTitle('Avila Tek E-commerce API')
-      .setDescription(
-        'API REST escalable para una plataforma de comercio electrónico',
-      )
+      .setDescription('Scalable REST API for an e-commerce platform')
       .setVersion('1.0')
-      .addTag('auth', 'Endpoints de autenticación')
-      .addTag('users', 'Gestión de usuarios')
-      .addTag('products', 'Gestión de inventario de productos')
-      .addTag('orders', 'Procesamiento de pedidos de clientes')
+      .addTag('auth', 'Authentication endpoints')
+      .addTag('users', 'User management')
+      .addTag('products', 'Product inventory management')
+      .addTag('orders', 'Customer order processing')
       .addBearerAuth(
         {
           type: 'http',
@@ -66,12 +64,12 @@ async function bootstrap() {
     const port = process.env.PORT || 3000;
     await app.listen(port);
 
-    logger.log(`🚀 Aplicación iniciada en el puerto ${port}`);
+    logger.log(`🚀 Application started on port ${port}`);
     logger.log(
-      `📚 Documentación Swagger disponible en: http://localhost:${port}/api/docs`,
+      `📚 Swagger documentation available at: http://localhost:${port}/api/docs`,
     );
   } catch (error) {
-    logger.error('❌ Error al iniciar la aplicación:', error);
+    logger.error('❌ Error starting application:', error);
     process.exit(1);
   }
 }

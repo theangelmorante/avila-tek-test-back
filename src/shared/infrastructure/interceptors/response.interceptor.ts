@@ -38,38 +38,40 @@ export class ResponseInterceptor<T>
 
   private getStatusMessage(statusCode: number): string {
     const messages: { [key: number]: string } = {
-      [HttpStatus.OK]: 'Operación exitosa',
-      [HttpStatus.CREATED]: 'Recurso creado exitosamente',
-      [HttpStatus.ACCEPTED]: 'Solicitud aceptada',
-      [HttpStatus.NO_CONTENT]: 'Operación completada sin contenido',
-      [HttpStatus.BAD_REQUEST]: 'Solicitud incorrecta',
-      [HttpStatus.UNAUTHORIZED]: 'No autorizado',
-      [HttpStatus.FORBIDDEN]: 'Acceso prohibido',
-      [HttpStatus.NOT_FOUND]: 'Recurso no encontrado',
-      [HttpStatus.CONFLICT]: 'Conflicto en la solicitud',
-      [HttpStatus.UNPROCESSABLE_ENTITY]: 'Entidad no procesable',
-      [HttpStatus.INTERNAL_SERVER_ERROR]: 'Error interno del servidor',
-      [HttpStatus.SERVICE_UNAVAILABLE]: 'Servicio no disponible',
+      [HttpStatus.OK]: 'Operation successful',
+      [HttpStatus.CREATED]: 'Resource created successfully',
+      [HttpStatus.ACCEPTED]: 'Request accepted',
+      [HttpStatus.NO_CONTENT]: 'Operation completed without content',
+      [HttpStatus.BAD_REQUEST]: 'Invalid request',
+      [HttpStatus.UNAUTHORIZED]: 'Unauthorized',
+      [HttpStatus.FORBIDDEN]: 'Access forbidden',
+      [HttpStatus.NOT_FOUND]: 'Resource not found',
+      [HttpStatus.CONFLICT]: 'Request conflict',
+      [HttpStatus.UNPROCESSABLE_ENTITY]: 'Unprocessable entity',
+      [HttpStatus.INTERNAL_SERVER_ERROR]: 'Internal server error',
+      [HttpStatus.SERVICE_UNAVAILABLE]: 'Service unavailable',
     };
 
-    return messages[statusCode] || 'Operación completada';
+    return messages[statusCode] || 'Operation completed';
   }
 
   private getErrorMessage(statusCode: number): string {
     const messages: { [key: number]: string } = {
-      [HttpStatus.BAD_REQUEST]: 'Los datos proporcionados son inválidos',
-      [HttpStatus.UNAUTHORIZED]: 'Credenciales inválidas o token expirado',
-      [HttpStatus.FORBIDDEN]: 'No tienes permisos para realizar esta acción',
-      [HttpStatus.NOT_FOUND]: 'El recurso solicitado no existe',
-      [HttpStatus.CONFLICT]: 'El recurso ya existe o hay un conflicto',
+      [HttpStatus.BAD_REQUEST]: 'The provided data is invalid',
+      [HttpStatus.UNAUTHORIZED]: 'Invalid credentials or expired token',
+      [HttpStatus.FORBIDDEN]:
+        'You do not have permission to perform this action',
+      [HttpStatus.NOT_FOUND]: 'The requested resource does not exist',
+      [HttpStatus.CONFLICT]:
+        'The resource already exists or there is a conflict',
       [HttpStatus.UNPROCESSABLE_ENTITY]:
-        'Los datos proporcionados no pueden ser procesados',
-      [HttpStatus.INTERNAL_SERVER_ERROR]: 'Ha ocurrido un error interno',
+        'The provided data cannot be processed',
+      [HttpStatus.INTERNAL_SERVER_ERROR]: 'An internal error has occurred',
       [HttpStatus.SERVICE_UNAVAILABLE]:
-        'El servicio no está disponible temporalmente',
+        'The service is temporarily unavailable',
     };
 
-    return messages[statusCode] || 'Ha ocurrido un error';
+    return messages[statusCode] || 'An error has occurred';
   }
 
   intercept(
@@ -81,20 +83,22 @@ export class ResponseInterceptor<T>
     const { method, url } = request;
     const timestamp = new Date().toISOString();
 
-    this.logger.debug(`Procesando ${method} ${url}`);
+    this.logger.debug(`Processing ${method} ${url}`);
 
     return next.handle().pipe(
       map((data) => {
         const statusCode = response.statusCode || HttpStatus.OK;
         const message = this.getStatusMessage(statusCode);
 
-        // Si la respuesta ya está estandarizada, la devolvemos tal como está
+        // If response is already standardized, return it as is
         if (data && typeof data === 'object' && 'success' in data) {
-          this.logger.debug(`Respuesta ya estandarizada para ${method} ${url}`);
+          this.logger.debug(
+            `Response already standardized for ${method} ${url}`,
+          );
           return data;
         }
 
-        // Si la respuesta tiene un formato específico con 'message' y 'data', lo preservamos
+        // If response has specific format with 'message' and 'data', preserve it
         if (
           data &&
           typeof data === 'object' &&
@@ -102,7 +106,7 @@ export class ResponseInterceptor<T>
           'data' in data
         ) {
           this.logger.debug(
-            `Respuesta con formato específico para ${method} ${url}`,
+            `Response with specific format for ${method} ${url}`,
           );
           return {
             success: true,
@@ -115,8 +119,8 @@ export class ResponseInterceptor<T>
           };
         }
 
-        // Respuesta estándar
-        this.logger.debug(`Aplicando formato estándar para ${method} ${url}`);
+        // Standard response
+        this.logger.debug(`Applying standard format for ${method} ${url}`);
         return {
           success: true,
           code: statusCode,
@@ -130,10 +134,10 @@ export class ResponseInterceptor<T>
       catchError((error) => {
         const statusCode = error.status || HttpStatus.INTERNAL_SERVER_ERROR;
         const message = this.getErrorMessage(statusCode);
-        const errorMessage = error.message || 'Error desconocido';
+        const errorMessage = error.message || 'Unknown error';
 
         this.logger.error(
-          `Error en ${method} ${url}: ${errorMessage}`,
+          `Error in ${method} ${url}: ${errorMessage}`,
           error.stack,
         );
 

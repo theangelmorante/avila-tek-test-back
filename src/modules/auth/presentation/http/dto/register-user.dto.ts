@@ -3,38 +3,38 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegisterUserDto {
   @ApiProperty({
-    description: 'Email del usuario',
-    example: 'usuario@ejemplo.com',
+    description: 'User email address',
+    example: 'user@example.com',
     type: String,
   })
-  @IsEmail({}, { message: 'El email debe ser válido' })
+  @IsEmail({}, { message: 'Email must be valid' })
   email: string;
 
   @ApiProperty({
-    description: 'Contraseña del usuario (mínimo 6 caracteres)',
-    example: 'contraseña123',
+    description: 'User password (minimum 6 characters)',
+    example: 'password123',
     minLength: 6,
     type: String,
   })
-  @IsString({ message: 'La contraseña debe ser una cadena de texto' })
-  @MinLength(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
+  @IsString({ message: 'Password must be a string' })
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password: string;
 
   @ApiPropertyOptional({
-    description: 'Nombre del usuario',
-    example: 'Juan',
+    description: 'User first name',
+    example: 'John',
     type: String,
   })
   @IsOptional()
-  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @IsString({ message: 'First name must be a string' })
   firstName?: string;
 
   @ApiPropertyOptional({
-    description: 'Apellido del usuario',
-    example: 'Pérez',
+    description: 'User last name',
+    example: 'Doe',
     type: String,
   })
   @IsOptional()
-  @IsString({ message: 'El apellido debe ser una cadena de texto' })
+  @IsString({ message: 'Last name must be a string' })
   lastName?: string;
 }

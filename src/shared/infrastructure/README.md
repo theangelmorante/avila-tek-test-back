@@ -1,24 +1,24 @@
-# Componentes de Infraestructura Compartidos
+# Shared Infrastructure Components
 
-Este directorio contiene componentes globales que se aplican a toda la aplicación para estandarizar el comportamiento y las respuestas.
+This directory contains global components that are applied to the entire application to standardize behavior and responses.
 
-## Componentes
+## Components
 
 ### 1. ResponseInterceptor
 
-**Ubicación**: `interceptors/response.interceptor.ts`
+**Location**: `interceptors/response.interceptor.ts`
 
-**Propósito**: Estandariza todas las respuestas de la API con un formato consistente.
+**Purpose**: Standardizes all API responses with a consistent format.
 
-**Formato de respuesta exitosa**:
+**Successful response format**:
 
 ```json
 {
   "success": true,
   "code": 200,
-  "message": "Operación exitosa",
+  "message": "Operation successful",
   "data": {
-    /* datos de la respuesta */
+    /* response data */
   },
   "timestamp": "2024-01-15T10:30:00.000Z",
   "path": "/api/products",
@@ -26,13 +26,13 @@ Este directorio contiene componentes globales que se aplican a toda la aplicaci�
 }
 ```
 
-**Formato de respuesta de error**:
+**Error response format**:
 
 ```json
 {
   "success": false,
   "code": 400,
-  "message": "Los datos proporcionados son inválidos",
+  "message": "The provided data is invalid",
   "error": "ValidationError",
   "timestamp": "2024-01-15T10:30:00.000Z",
   "path": "/api/products",
@@ -41,86 +41,86 @@ Este directorio contiene componentes globales que se aplican a toda la aplicaci�
     {
       "field": "name",
       "value": "",
-      "constraints": ["El nombre es requerido"]
+      "constraints": ["Name is required"]
     }
   ]
 }
 ```
 
-**Características**:
+**Features**:
 
-- Detecta automáticamente si la respuesta ya está estandarizada
-- Preserva el formato de respuestas con `message` y `data`
-- Aplica formato estándar a respuestas simples
-- Maneja errores de manera consistente
+- Automatically detects if response is already standardized
+- Preserves format for responses with `message` and `data`
+- Applies standard format to simple responses
+- Handles errors consistently
 
 ### 2. GlobalExceptionFilter
 
-**Ubicación**: `filters/global-exception.filter.ts`
+**Location**: `filters/global-exception.filter.ts`
 
-**Propósito**: Captura y formatea todas las excepciones de la aplicación.
+**Purpose**: Captures and formats all application exceptions.
 
-**Características**:
+**Features**:
 
-- Maneja excepciones HTTP y errores generales
-- Proporciona mensajes de error consistentes
-- Incluye detalles de validación cuando están disponibles
-- Registra errores con logging detallado
+- Handles HTTP exceptions and general errors
+- Provides consistent error messages
+- Includes validation details when available
+- Logs errors with detailed information
 
 ### 3. ValidationPipe
 
-**Ubicación**: `pipes/validation.pipe.ts`
+**Location**: `pipes/validation.pipe.ts`
 
-**Propósito**: Valida automáticamente los DTOs de entrada.
+**Purpose**: Automatically validates input DTOs.
 
-**Características**:
+**Features**:
 
-- Valida automáticamente todos los DTOs
-- Proporciona errores de validación detallados
-- Formatea errores de validación de manera consistente
-- Registra errores de validación
+- Automatically validates all DTOs
+- Provides detailed validation errors
+- Formats validation errors consistently
+- Logs validation errors
 
-## Códigos de Estado HTTP Soportados
+## Supported HTTP Status Codes
 
-### Respuestas Exitosas
+### Successful Responses
 
-- `200 OK`: Operación exitosa
-- `201 Created`: Recurso creado exitosamente
-- `204 No Content`: Operación completada sin contenido
+- `200 OK`: Operation successful
+- `201 Created`: Resource created successfully
+- `204 No Content`: Operation completed without content
 
-### Errores de Cliente
+### Client Errors
 
-- `400 Bad Request`: Los datos proporcionados son inválidos
-- `401 Unauthorized`: Credenciales inválidas o token expirado
-- `403 Forbidden`: No tienes permisos para realizar esta acción
-- `404 Not Found`: El recurso solicitado no existe
-- `409 Conflict`: El recurso ya existe o hay un conflicto
-- `422 Unprocessable Entity`: Los datos proporcionados no pueden ser procesados
+- `400 Bad Request`: The provided data is invalid
+- `401 Unauthorized`: Invalid credentials or expired token
+- `403 Forbidden`: You do not have permission to perform this action
+- `404 Not Found`: The requested resource does not exist
+- `409 Conflict`: The resource already exists or there is a conflict
+- `422 Unprocessable Entity`: The provided data cannot be processed
 
-### Errores de Servidor
+### Server Errors
 
-- `500 Internal Server Error`: Ha ocurrido un error interno
-- `503 Service Unavailable`: El servicio no está disponible temporalmente
+- `500 Internal Server Error`: An internal error has occurred
+- `503 Service Unavailable`: The service is temporarily unavailable
 
-## Uso
+## Usage
 
-Los componentes se aplican automáticamente a toda la aplicación desde `main.ts`:
+Components are automatically applied to the entire application from `main.ts`:
 
 ```typescript
-// Configurar pipes globales
+// Configure global pipes
 app.useGlobalPipes(new CustomValidationPipe());
 
-// Configurar filtro de excepciones global
+// Configure global exception filter
 app.useGlobalFilters(new GlobalExceptionFilter());
 
-// Configurar interceptor de respuesta global
+// Configure global response interceptor
 app.useGlobalInterceptors(new ResponseInterceptor());
 ```
 
-## Beneficios
+## Benefits
 
-1. **Consistencia**: Todas las respuestas siguen el mismo formato
-2. **Mantenibilidad**: Cambios en el formato se aplican globalmente
-3. **Debugging**: Información detallada para debugging
-4. **Documentación**: Swagger muestra el formato real de las respuestas
-5. **Experiencia del desarrollador**: Formato predecible para consumir la API
+1. **Consistency**: All responses follow the same format
+2. **Maintainability**: Changes to format are applied globally
+3. **Debugging**: Detailed information for debugging
+4. **Documentation**: Swagger shows the actual response format
+5. **Developer Experience**: Predictable format for consuming the API

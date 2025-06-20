@@ -25,19 +25,21 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
   private getErrorMessage(statusCode: number): string {
     const messages: { [key: number]: string } = {
-      [HttpStatus.BAD_REQUEST]: 'Los datos proporcionados son inválidos',
-      [HttpStatus.UNAUTHORIZED]: 'Credenciales inválidas o token expirado',
-      [HttpStatus.FORBIDDEN]: 'No tienes permisos para realizar esta acción',
-      [HttpStatus.NOT_FOUND]: 'El recurso solicitado no existe',
-      [HttpStatus.CONFLICT]: 'El recurso ya existe o hay un conflicto',
+      [HttpStatus.BAD_REQUEST]: 'The provided data is invalid',
+      [HttpStatus.UNAUTHORIZED]: 'Invalid credentials or expired token',
+      [HttpStatus.FORBIDDEN]:
+        'You do not have permission to perform this action',
+      [HttpStatus.NOT_FOUND]: 'The requested resource does not exist',
+      [HttpStatus.CONFLICT]:
+        'The resource already exists or there is a conflict',
       [HttpStatus.UNPROCESSABLE_ENTITY]:
-        'Los datos proporcionados no pueden ser procesados',
-      [HttpStatus.INTERNAL_SERVER_ERROR]: 'Ha ocurrido un error interno',
+        'The provided data cannot be processed',
+      [HttpStatus.INTERNAL_SERVER_ERROR]: 'An internal error has occurred',
       [HttpStatus.SERVICE_UNAVAILABLE]:
-        'El servicio no está disponible temporalmente',
+        'The service is temporarily unavailable',
     };
 
-    return messages[statusCode] || 'Ha ocurrido un error';
+    return messages[statusCode] || 'An error has occurred';
   }
 
   catch(exception: unknown, host: ArgumentsHost) {
@@ -72,16 +74,16 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     } else {
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
       message = this.getErrorMessage(statusCode);
-      errorMessage = 'Error desconocido';
+      errorMessage = 'Unknown error';
     }
 
-    // Log del error
+    // Log the error
     this.logger.error(
-      `Error ${statusCode} en ${method} ${url}: ${errorMessage}`,
+      `Error ${statusCode} in ${method} ${url}: ${errorMessage}`,
       exception instanceof Error ? exception.stack : undefined,
     );
 
-    // Si es un error de validación, extraer detalles
+    // If it's a validation error, extract details
     if (
       statusCode === HttpStatus.BAD_REQUEST &&
       exception instanceof HttpException

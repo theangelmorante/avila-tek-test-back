@@ -31,27 +31,27 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
-    summary: 'Registrar un nuevo usuario',
-    description: 'Crea una nueva cuenta de usuario en el sistema',
+    summary: 'Register a new user',
+    description: 'Creates a new user account in the system',
   })
   @ApiBody({
     type: RegisterUserDto,
-    description: 'Datos del usuario a registrar',
+    description: 'User registration data',
   })
   @ApiResponse({
     status: 201,
-    description: 'Usuario registrado exitosamente',
+    description: 'User registered successfully',
     schema: {
       type: 'object',
       properties: {
         success: { type: 'boolean', example: true },
         code: { type: 'number', example: 201 },
-        message: { type: 'string', example: 'Usuario registrado exitosamente' },
+        message: { type: 'string', example: 'User registered successfully' },
         data: {
           type: 'object',
           properties: {
             id: { type: 'string', example: 'clx1234567890' },
-            email: { type: 'string', example: 'usuario@ejemplo.com' },
+            email: { type: 'string', example: 'user@example.com' },
           },
         },
         timestamp: { type: 'string', example: '2024-01-15T10:30:00.000Z' },
@@ -62,14 +62,14 @@ export class AuthController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Datos de entrada inválidos',
+    description: 'Invalid input data',
   })
   @ApiResponse({
     status: 409,
-    description: 'El email ya está registrado',
+    description: 'Email already registered',
   })
   async register(@Body() registerUserDto: RegisterUserDto) {
-    this.logger.log(`Iniciando registro de usuario: ${registerUserDto.email}`);
+    this.logger.log(`Starting user registration: ${registerUserDto.email}`);
 
     const command = new RegisterUserCommand(
       registerUserDto.email,
@@ -80,10 +80,10 @@ export class AuthController {
 
     const result = await this.commandBus.execute(command);
 
-    this.logger.log(`Usuario registrado exitosamente: ${result.id}`);
+    this.logger.log(`User registered successfully: ${result.id}`);
 
     return {
-      message: 'Usuario registrado exitosamente',
+      message: 'User registered successfully',
       data: result,
     };
   }
@@ -92,22 +92,22 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Iniciar sesión',
-    description: 'Autentica un usuario y devuelve un token JWT',
+    summary: 'User login',
+    description: 'Authenticates a user and returns a JWT token',
   })
   @ApiBody({
     type: LoginUserDto,
-    description: 'Credenciales de autenticación',
+    description: 'Authentication credentials',
   })
   @ApiResponse({
     status: 200,
-    description: 'Login exitoso',
+    description: 'Login successful',
     schema: {
       type: 'object',
       properties: {
         success: { type: 'boolean', example: true },
         code: { type: 'number', example: 200 },
-        message: { type: 'string', example: 'Login exitoso' },
+        message: { type: 'string', example: 'Login successful' },
         data: {
           type: 'object',
           properties: {
@@ -119,10 +119,10 @@ export class AuthController {
               type: 'object',
               properties: {
                 id: { type: 'string', example: 'clx1234567890' },
-                email: { type: 'string', example: 'usuario@ejemplo.com' },
-                firstName: { type: 'string', example: 'Juan' },
-                lastName: { type: 'string', example: 'Pérez' },
-                fullName: { type: 'string', example: 'Juan Pérez' },
+                email: { type: 'string', example: 'user@example.com' },
+                firstName: { type: 'string', example: 'John' },
+                lastName: { type: 'string', example: 'Doe' },
+                fullName: { type: 'string', example: 'John Doe' },
               },
             },
           },
@@ -135,14 +135,14 @@ export class AuthController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Datos de entrada inválidos',
+    description: 'Invalid input data',
   })
   @ApiResponse({
     status: 401,
-    description: 'Credenciales inválidas',
+    description: 'Invalid credentials',
   })
   async login(@Body() loginUserDto: LoginUserDto) {
-    this.logger.log(`Iniciando login de usuario: ${loginUserDto.email}`);
+    this.logger.log(`Starting user login: ${loginUserDto.email}`);
 
     const command = new LoginUserCommand(
       loginUserDto.email,
@@ -151,10 +151,10 @@ export class AuthController {
 
     const result = await this.commandBus.execute(command);
 
-    this.logger.log(`Login exitoso para usuario: ${result.user.id}`);
+    this.logger.log(`Login successful for user: ${result.user.id}`);
 
     return {
-      message: 'Login exitoso',
+      message: 'Login successful',
       data: result,
     };
   }

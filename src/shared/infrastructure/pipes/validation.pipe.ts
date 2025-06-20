@@ -30,16 +30,14 @@ export class ValidationPipe implements PipeTransform<any> {
           value: error.value,
           constraints: constraints
             ? Object.values(constraints)
-            : ['Campo inválido'],
+            : ['Invalid field'],
         };
       });
 
-      this.logger.warn(
-        `Error de validación: ${JSON.stringify(validationErrors)}`,
-      );
+      this.logger.warn(`Validation error: ${JSON.stringify(validationErrors)}`);
 
       throw new BadRequestException({
-        message: 'Los datos proporcionados son inválidos',
+        message: 'The provided data is invalid',
         error: 'ValidationError',
         details: validationErrors,
       });

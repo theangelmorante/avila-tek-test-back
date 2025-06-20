@@ -4,12 +4,10 @@ import { OrderStatus } from '../../../domain/entities/order.entity';
 
 export class UpdateOrderStatusDto {
   @ApiProperty({
-    description: 'Nuevo estado del pedido',
+    description: 'New order status',
     enum: OrderStatus,
     example: OrderStatus.CONFIRMED,
   })
-  @IsEnum(OrderStatus, {
-    message: 'El estado debe ser uno de los valores válidos',
-  })
+  @IsEnum(OrderStatus, { message: 'Status must be one of the valid values' })
   status: OrderStatus;
 }
