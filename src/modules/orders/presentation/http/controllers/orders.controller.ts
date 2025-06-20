@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Put,
+  Delete,
   Body,
   Param,
   Query,
@@ -22,12 +23,15 @@ import {
 } from '@nestjs/swagger';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderStatusDto } from '../dto/update-order-status.dto';
+import { UpdateOrderItemsDto } from '../dto/update-order-items.dto';
 import { CreateOrderCommand } from '../../../application/commands/create-order.command';
 import { UpdateOrderStatusCommand } from '../../../application/commands/update-order-status.command';
+import { UpdateOrderItemsCommand } from '../../../application/commands/update-order-items.command';
 import { GetOrderByIdQuery } from '../../../application/queries/get-order-by-id.query';
 import { GetUserOrdersQuery } from '../../../application/queries/get-user-orders.query';
 import { PaginationDto } from '../../../../../shared/domain/dto/pagination.dto';
 import { CurrentUser } from '../../../../../shared/domain/decorators/current-user.decorator';
+import { OrderStatus } from '../../../domain/entities/order.entity';
 
 @ApiTags('orders')
 @ApiBearerAuth('JWT-auth')
@@ -168,20 +172,49 @@ export class OrdersController {
     };
   }
 
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Actualizar ítems de un pedido',
+    description:
+      'Reemplaza los ítems de un pedido existente. Esta operación es atómica.',
+  })
+  @ApiParam({ name: 'id', description: 'ID del pedido a actualizar' })
+  @ApiBody({ type: UpdateOrderItemsDto })
+  @ApiResponse({ status: 200, description: 'Pedido actualizado exitosamente' })
+  @ApiResponse({
+    status: 400,
+    description:
+      'Datos inválidos, falta de stock o el pedido no se puede modificar',
+  })
+  @ApiResponse({ status: 404, description: 'Pedido o producto no encontrado' })
+  async updateOrderItems(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateOrderItemsDto,
+    @CurrentUser() user: { id: string },
+  ) {
+    const command = new UpdateOrderItemsCommand(id, user.id, updateDto.items);
+    const result = await this.commandBus.execute(command);
+    return {
+      message: 'Order items updated successfully',
+      data: result,
+    };
+  }
+
   @Put(':id/status')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Actualizar estado del pedido',
-    description: 'Actualiza el estado de un pedido específico',
+    summary: 'Update order status',
+    description: 'Update the status of a specific order',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del pedido',
+    description: 'Order ID',
     example: 'clxabcdef1234',
   })
   @ApiBody({
     type: UpdateOrderStatusDto,
-    description: 'Nuevo estado del pedido',
+    description: 'New order status',
   })
   @ApiResponse({
     status: 200,
@@ -218,6 +251,51 @@ export class OrdersController {
 
     return {
       message: 'Order status updated successfully',
+      data: result,
+    };
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Cancel an order',
+    description: 'Cancel a specific order if its status allows it.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Order ID to cancel',
+    example: 'clxabcdef1234',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Order cancelled successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Order not found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Order cannot be cancelled',
+  })
+  async cancelOrder(
+    @Param('id') id: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    const userId = user.id;
+    this.logger.log(`Cancelling order: ${id} for user: ${userId}`);
+
+    const command = new UpdateOrderStatusCommand(
+      id,
+      userId,
+      OrderStatus.CANCELLED,
+    );
+    const result = await this.commandBus.execute(command);
+
+    this.logger.log(`Order cancelled successfully: ${result.id}`);
+
+    return {
+      message: 'Order cancelled successfully',
       data: result,
     };
   }

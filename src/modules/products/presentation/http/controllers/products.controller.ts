@@ -265,7 +265,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Eliminar producto',
     description: 'Elimina un producto del inventario',
@@ -276,7 +276,7 @@ export class ProductsController {
     example: 'clx1234567890',
   })
   @ApiResponse({
-    status: 204,
+    status: 200,
     description: 'Product deleted successfully',
   })
   @ApiResponse({
