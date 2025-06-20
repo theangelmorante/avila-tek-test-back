@@ -91,7 +91,7 @@ describe('CreateUserHandler', () => {
 
       // Act & Assert
       await expect(handler.execute(command)).rejects.toThrow(
-        new ConflictException('El usuario ya existe con este email'),
+        new ConflictException('The user already exists with this email'),
       );
 
       expect(userRepository.findByEmail).toHaveBeenCalledWith(command.email);

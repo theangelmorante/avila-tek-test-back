@@ -11,7 +11,6 @@ import { IProductRepository } from '../../../products/domain/repositories/produc
 import { ORDER_REPOSITORY } from '../../domain/tokens';
 import { PRODUCT_REPOSITORY } from '../../../products/domain/tokens';
 import { UpdateOrderItemsCommand } from '../commands/update-order-items.command';
-import { OrderItem } from '../../domain/entities/order-item.entity';
 import { PrismaService } from '../../../../shared/infrastructure/prisma/prisma.service';
 
 @CommandHandler(UpdateOrderItemsCommand)

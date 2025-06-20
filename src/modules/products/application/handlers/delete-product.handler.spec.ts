@@ -60,7 +60,7 @@ describe('DeleteProductHandler', () => {
 
       // Act & Assert
       await expect(handler.execute(command)).rejects.toThrow(
-        new NotFoundException('Producto no encontrado'),
+        new NotFoundException('Product not found'),
       );
 
       expect(productRepository.existsById).toHaveBeenCalledWith(command.id);

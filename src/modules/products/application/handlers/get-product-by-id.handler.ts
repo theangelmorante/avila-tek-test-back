@@ -18,7 +18,7 @@ export class GetProductByIdHandler
 
     const product = await this.productRepository.findById(id);
     if (!product) {
-      throw new NotFoundException('Producto no encontrado');
+      throw new NotFoundException('Order not found');
     }
 
     return {

@@ -7,19 +7,25 @@ import { ORDER_REPOSITORY } from '../../domain/tokens';
 import { PRODUCT_REPOSITORY } from '../../../products/domain/tokens';
 import { Order } from '../../domain/entities/order.entity';
 import { OrderItem } from '../../domain/entities/order-item.entity';
+import { CommandBus } from '@nestjs/cqrs';
+import { UpdateProductCommand } from '../../../products/application/commands/update-product.command';
+import { BadRequestException } from '@nestjs/common';
 
 const mockOrderRepository = {
   save: jest.fn(),
 };
 const mockProductRepository = {
   findById: jest.fn(),
-  save: jest.fn(),
+};
+const mockCommandBus = {
+  execute: jest.fn(),
 };
 
 describe('CreateOrderHandler', () => {
   let handler: CreateOrderHandler;
   let orderRepository: IOrderRepository;
   let productRepository: IProductRepository;
+  let commandBus: CommandBus;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -27,12 +33,14 @@ describe('CreateOrderHandler', () => {
         CreateOrderHandler,
         { provide: ORDER_REPOSITORY, useValue: mockOrderRepository },
         { provide: PRODUCT_REPOSITORY, useValue: mockProductRepository },
+        { provide: CommandBus, useValue: mockCommandBus },
       ],
     }).compile();
 
     handler = module.get<CreateOrderHandler>(CreateOrderHandler);
     orderRepository = module.get<IOrderRepository>(ORDER_REPOSITORY);
     productRepository = module.get<IProductRepository>(PRODUCT_REPOSITORY);
+    commandBus = module.get<CommandBus>(CommandBus);
   });
 
   afterEach(() => {
@@ -58,8 +66,6 @@ describe('CreateOrderHandler', () => {
       price: 100,
       stock: 5,
       isActive: true,
-      updateStock: jest.fn(),
-      save: jest.fn(),
     };
     const product2 = {
       id: 'prod-2',
@@ -67,18 +73,16 @@ describe('CreateOrderHandler', () => {
       price: 50,
       stock: 2,
       isActive: true,
-      updateStock: jest.fn(),
-      save: jest.fn(),
     };
 
     mockProductRepository.findById
       .mockResolvedValueOnce(product1)
       .mockResolvedValueOnce(product2);
-    mockProductRepository.save.mockResolvedValue(undefined);
+    mockCommandBus.execute.mockResolvedValue(undefined);
 
     const orderItems = [
-      OrderItem.create('prod-1', 'Product 1', 100, 2),
-      OrderItem.create('prod-2', 'Product 2', 50, 1),
+      OrderItem.create('prod-1', 2, 100),
+      OrderItem.create('prod-2', 1, 50),
     ];
     const orderEntity = Order.create(userId, orderItems);
     (orderEntity as any).id = 'order-1';
@@ -89,7 +93,13 @@ describe('CreateOrderHandler', () => {
 
     // Assert
     expect(productRepository.findById).toHaveBeenCalledTimes(2);
-    expect(productRepository.save).toHaveBeenCalledTimes(2);
+    expect(commandBus.execute).toHaveBeenCalledTimes(2);
+    expect(commandBus.execute).toHaveBeenCalledWith(
+      new UpdateProductCommand('prod-1', undefined, undefined, undefined, 3),
+    );
+    expect(commandBus.execute).toHaveBeenCalledWith(
+      new UpdateProductCommand('prod-2', undefined, undefined, undefined, 1),
+    );
     expect(orderRepository.save).toHaveBeenCalledWith(expect.any(Order));
     expect(result).toEqual({
       id: 'order-1',
@@ -104,10 +114,10 @@ describe('CreateOrderHandler', () => {
     mockProductRepository.findById.mockResolvedValueOnce(null);
 
     await expect(handler.execute(command)).rejects.toThrow(
-      'Producto con ID prod-1 no encontrado',
+      new BadRequestException('Product with ID prod-1 not found'),
     );
     expect(productRepository.findById).toHaveBeenCalledWith('prod-1');
-    expect(productRepository.save).not.toHaveBeenCalled();
+    expect(commandBus.execute).not.toHaveBeenCalled();
     expect(orderRepository.save).not.toHaveBeenCalled();
   });
 
@@ -125,10 +135,10 @@ describe('CreateOrderHandler', () => {
     mockProductRepository.findById.mockResolvedValueOnce(product);
 
     await expect(handler.execute(command)).rejects.toThrow(
-      'Producto con ID prod-1 no está disponible',
+      new BadRequestException('Product with ID prod-1 is not available'),
     );
     expect(productRepository.findById).toHaveBeenCalledWith('prod-1');
-    expect(productRepository.save).not.toHaveBeenCalled();
+    expect(commandBus.execute).not.toHaveBeenCalled();
     expect(orderRepository.save).not.toHaveBeenCalled();
   });
 
@@ -146,10 +156,10 @@ describe('CreateOrderHandler', () => {
     mockProductRepository.findById.mockResolvedValueOnce(product);
 
     await expect(handler.execute(command)).rejects.toThrow(
-      'Stock insuficiente para el producto Product 1',
+      new BadRequestException('Insufficient stock for product Product 1'),
     );
     expect(productRepository.findById).toHaveBeenCalledWith('prod-1');
-    expect(productRepository.save).not.toHaveBeenCalled();
+    expect(commandBus.execute).not.toHaveBeenCalled();
     expect(orderRepository.save).not.toHaveBeenCalled();
   });
 });

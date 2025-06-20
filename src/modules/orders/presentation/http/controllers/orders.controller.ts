@@ -137,13 +137,13 @@ export class OrdersController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener pedido por ID',
+    summary: 'Get order by ID',
     description:
-      'Obtiene un pedido específico por su ID (solo del usuario autenticado)',
+      'Get a specific order by its ID (only for the authenticated user)',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del pedido',
+    description: 'Order ID',
     example: 'clxabcdef1234',
   })
   @ApiResponse({
@@ -175,19 +175,18 @@ export class OrdersController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Actualizar ítems de un pedido',
+    summary: 'Update order items',
     description:
-      'Reemplaza los ítems de un pedido existente. Esta operación es atómica.',
+      'Replaces the items of an existing order. This operation is atomic.',
   })
-  @ApiParam({ name: 'id', description: 'ID del pedido a actualizar' })
+  @ApiParam({ name: 'id', description: 'Order ID to update' })
   @ApiBody({ type: UpdateOrderItemsDto })
-  @ApiResponse({ status: 200, description: 'Pedido actualizado exitosamente' })
+  @ApiResponse({ status: 200, description: 'Order updated successfully' })
   @ApiResponse({
     status: 400,
-    description:
-      'Datos inválidos, falta de stock o el pedido no se puede modificar',
+    description: 'Invalid data, lack of stock or the order cannot be modified',
   })
-  @ApiResponse({ status: 404, description: 'Pedido o producto no encontrado' })
+  @ApiResponse({ status: 404, description: 'Order or product not found' })
   async updateOrderItems(
     @Param('id') id: string,
     @Body() updateDto: UpdateOrderItemsDto,

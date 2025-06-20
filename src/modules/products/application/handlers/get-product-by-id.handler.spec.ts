@@ -79,7 +79,7 @@ describe('GetProductByIdHandler', () => {
 
       // Act & Assert
       await expect(handler.execute(query)).rejects.toThrow(
-        new NotFoundException('Producto no encontrado'),
+        new NotFoundException('Order not found'),
       );
       expect(productRepository.findById).toHaveBeenCalledWith(productId);
     });

@@ -94,7 +94,7 @@ describe('UpdateProductHandler', () => {
 
       // Act & Assert
       await expect(handler.execute(command)).rejects.toThrow(
-        new NotFoundException('Producto no encontrado'),
+        new NotFoundException('Product not found'),
       );
 
       expect(productRepository.findById).toHaveBeenCalledWith(command.id);
