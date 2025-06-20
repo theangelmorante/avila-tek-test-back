@@ -7,19 +7,36 @@ import {
   ArrayMinSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class OrderItemDto {
-  @IsString({ message: 'El ID del producto debe ser una cadena de texto' })
+  @ApiProperty({
+    description: 'Product ID',
+    example: 'clx1234567890',
+    type: String,
+  })
+  @IsString({ message: 'Product ID must be a string' })
   productId: string;
 
-  @IsNumber({}, { message: 'La cantidad debe ser un número' })
-  @Min(1, { message: 'La cantidad debe ser mayor a 0' })
+  @ApiProperty({
+    description: 'Product quantity',
+    example: 2,
+    minimum: 1,
+    type: Number,
+  })
+  @IsNumber({}, { message: 'Quantity must be a number' })
+  @Min(1, { message: 'Quantity must be greater than 0' })
   quantity: number;
 }
 
 export class CreateOrderDto {
-  @IsArray({ message: 'Los items deben ser un array' })
-  @ArrayMinSize(1, { message: 'El pedido debe contener al menos un producto' })
+  @ApiProperty({
+    description: 'List of products in the order',
+    type: [OrderItemDto],
+    minItems: 1,
+  })
+  @IsArray({ message: 'Items must be an array' })
+  @ArrayMinSize(1, { message: 'Order must contain at least one product' })
   @ValidateNested({ each: true })
   @Type(() => OrderItemDto)
   items: OrderItemDto[];

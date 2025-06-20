@@ -44,62 +44,68 @@ Este proyecto implementa una **arquitectura hexagonal** con **CQRS (Command Quer
 - **bcryptjs**: Hash de contraseñas
 - **class-validator**: Validación de datos
 
-## Configuración
+## Cómo Empezar (Modo de Desarrollo)
 
-### 1. Variables de Entorno
+Este proyecto está configurado para ejecutarse en un entorno híbrido: la base de datos corre en un contenedor de Docker y la aplicación NestJS se ejecuta localmente en tu máquina.
 
-Crea un archivo `.env` en la raíz del proyecto basado en `env.example`:
+### Prerrequisitos
+
+- Node.js (v18 o superior)
+- Yarn
+- Docker y Docker Compose
+
+### Paso 1: Levantar la Base de Datos
+
+El archivo `docker-compose.yml` contiene la configuración para el servicio de PostgreSQL. Para iniciar la base de datos, ejecuta:
 
 ```bash
-# Database
-DATABASE_URL="postgresql://postgres:password@localhost:5432/avilatek_ecommerce?schema=public"
+# Inicia el contenedor de la base de datos en segundo plano
+docker-compose up -d
+```
+
+La base de datos estará disponible en `localhost:5432`.
+
+### Paso 2: Configurar Variables de Entorno
+
+Copia el archivo `env.example` a un nuevo archivo llamado `.env` en la raíz del proyecto. El archivo debe contener las siguientes variables:
+
+**Archivo `.env`:**
+
+```env
+# Base de datos (apuntando a Docker)
+DATABASE_URL="postgresql://avilatek_user:avilatek_password@localhost:5432/avilatek_db?schema=public"
 
 # JWT
-JWT_SECRET="tu-super-secreto-jwt-muy-seguro-y-largo-para-produccion"
+JWT_SECRET="tu-secreto-para-desarrollo"
+JWT_EXPIRES_IN="24h"
 
 # App
 PORT=3000
 NODE_ENV=development
+
+# Frontend (Opcional)
+FRONTEND_URL="http://localhost:3001"
 ```
 
-### 2. Base de Datos
+### Paso 3: Ejecutar la Aplicación
 
-1. Instala PostgreSQL
-2. Crea una base de datos llamada `avilatek_ecommerce`
-3. Ejecuta las migraciones:
+Una vez que la base de datos esté corriendo y el archivo `.env` esté configurado, abre una terminal en la raíz del proyecto y ejecuta los siguientes comandos en orden:
 
 ```bash
-# Generar migración inicial
-npx prisma migrate dev --name init
-
-# Aplicar migraciones
-npx prisma migrate deploy
-```
-
-### 3. Instalación de Dependencias
-
-```bash
+# 1. Instalar dependencias
 yarn install
-```
 
-## Uso
+# 2. Aplicar las migraciones de la base de datos
+npx prisma migrate deploy
 
-### Desarrollo
+# 3. Generar el cliente de Prisma
+npx prisma generate
 
-```bash
-# Iniciar en modo desarrollo
+# 4. Iniciar el servidor en modo de desarrollo (con hot-reload)
 yarn start:dev
 ```
 
-### Producción
-
-```bash
-# Construir
-yarn build
-
-# Iniciar
-yarn start:prod
-```
+La aplicación estará disponible en `http://localhost:3000` y la documentación de Swagger en `http://localhost:3000/api/docs`.
 
 ## Autenticación y Autorización
 
@@ -830,6 +836,15 @@ src/
 8. **Caché**: Implementación de Redis para consultas frecuentes
 9. **CDN**: Para imágenes y assets estáticos
 10. **Load Balancing**: Para distribución de carga
+
+## Autor
+
+**Angel Morante**
+
+- **Bento:** [bento.me/angel-morante](https://bento.me/angel-morante)
+- **Sitio Web:** [angel-morante.vercel.app](https://angel-morante.vercel.app/)
+- **LinkedIn:** [Angel Morante](https://www.linkedin.com/in/angel-morante-aa76461a9/)
+- **Twitter:** [@theangelmorante](https://twitter.com/theangelmorante)
 
 ## Support
 

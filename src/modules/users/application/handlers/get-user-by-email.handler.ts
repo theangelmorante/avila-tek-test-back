@@ -1,4 +1,4 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { GetUserByEmailQuery } from '../queries/get-user-by-email.query';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';

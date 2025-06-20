@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { ICommandHandler } from '@nestjs/cqrs';
 import { ConflictException, Inject } from '@nestjs/common';
 import { CreateUserCommand } from '../commands/create-user.command';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';

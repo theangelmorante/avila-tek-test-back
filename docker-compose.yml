@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: avilatek-postgres
+    environment:
+      POSTGRES_DB: avilatek_db
+      POSTGRES_USER: avilatek_user
+      POSTGRES_PASSWORD: avilatek_password
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - avilatek-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U avilatek_user -d avilatek_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  avilatek-network:
+    driver: bridge

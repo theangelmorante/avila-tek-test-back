@@ -1,4 +1,4 @@
-import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler } from '@nestjs/cqrs';
 import { NotFoundException, Inject } from '@nestjs/common';
 import { GetUserByIdQuery } from '../queries/get-user-by-id.query';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';

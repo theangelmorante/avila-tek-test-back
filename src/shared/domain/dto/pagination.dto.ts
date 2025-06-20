@@ -1,18 +1,31 @@
 import { IsOptional, IsNumber, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class PaginationDto {
+  @ApiPropertyOptional({
+    description: 'Page number',
+    example: 1,
+    minimum: 1,
+    type: Number,
+  })
   @IsOptional()
   @Type(() => Number)
-  @IsNumber({}, { message: 'La página debe ser un número' })
-  @Min(1, { message: 'La página debe ser mayor a 0' })
+  @IsNumber({}, { message: 'Page must be a number' })
+  @Min(1, { message: 'Page must be greater than 0' })
   page?: number = 1;
 
+  @ApiPropertyOptional({
+    description: 'Number of items per page',
+    example: 10,
+    minimum: 1,
+    type: Number,
+  })
   @IsOptional()
   @Type(() => Number)
-  @IsNumber({}, { message: 'El límite debe ser un número' })
-  @Min(1, { message: 'El límite debe ser mayor a 0' })
-  @Max(100, { message: 'El límite máximo es 100' })
+  @IsNumber({}, { message: 'Limit must be a number' })
+  @Min(1, { message: 'Limit must be greater than 0' })
+  @Max(100, { message: 'The maximum limit is 100' })
   limit?: number = 10;
 
   get offset(): number {
