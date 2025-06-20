@@ -2,123 +2,106 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+[circleci-image]: https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.linkedin.com%2Fcompany%2Favilatek&psig=AOvVaw3J7nC30VBjc0pEse0O35eC&ust=1750510578619000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLig-ZyGgI4DFQAAAAAdAAAAABAE
+[circleci-url]: https://www.avilatek.com/en
 
 # Avila Tek E-commerce API
 
-API REST escalable para una plataforma de comercio electrónico desarrollada con NestJS, TypeScript y Prisma.
+Scalable REST API for an e-commerce platform built with NestJS, TypeScript, and Prisma.
 
-## Arquitectura
+## Architecture
 
-Este proyecto implementa una **arquitectura hexagonal** con **CQRS (Command Query Responsibility Segregation)** para cada módulo:
+This project implements a **Hexagonal Architecture** with **CQRS (Command Query Responsibility Segregation)** for each module:
 
-- **Domain Layer**: Entidades, interfaces de repositorios y servicios
-- **Application Layer**: Comandos, consultas y handlers (CQRS)
-- **Infrastructure Layer**: Implementaciones concretas, controladores, DTOs
+- **Domain Layer**: Entities, repository interfaces, and services.
+- **Application Layer**: Commands, queries, and handlers (CQRS).
+- **Infrastructure Layer**: Concrete implementations, controllers, DTOs.
 
-## Tecnologías
+## Technologies
 
-- **NestJS**: Framework de Node.js
-- **TypeScript**: Lenguaje de programación
-- **Prisma**: ORM para base de datos
-- **PostgreSQL**: Base de datos
-- **JWT**: Autenticación
-- **bcryptjs**: Hash de contraseñas
-- **class-validator**: Validación de datos
+- **NestJS**: Node.js framework.
+- **TypeScript**: Programming language.
+- **Prisma**: Database ORM.
+- **PostgreSQL**: Database.
+- **JWT**: Authentication.
+- **bcryptjs**: Password hashing.
+- **class-validator**: Data validation.
 
-## Cómo Empezar (Modo de Desarrollo)
+## Getting Started (Development Mode)
 
-Este proyecto está configurado para ejecutarse en un entorno híbrido: la base de datos corre en un contenedor de Docker y la aplicación NestJS se ejecuta localmente en tu máquina.
+This project is set up to run in a hybrid environment: the database runs in a Docker container, and the NestJS application runs locally on your machine.
 
-### Prerrequisitos
+### Prerequisites
 
-- Node.js (v18 o superior)
+- Node.js (v18 or higher)
 - Yarn
-- Docker y Docker Compose
+- Docker and Docker Compose
 
-### Paso 1: Levantar la Base de Datos
+### Step 1: Start the Database
 
-El archivo `docker-compose.yml` contiene la configuración para el servicio de PostgreSQL. Para iniciar la base de datos, ejecuta:
+The `docker-compose.yml` file contains the configuration for the PostgreSQL service. To start the database, run:
 
 ```bash
-# Inicia el contenedor de la base de datos en segundo plano
+# Start the database container in the background
 docker-compose up -d
 ```
 
-La base de datos estará disponible en `localhost:5432`.
+The database will be available at `localhost:5432`.
 
-### Paso 2: Configurar Variables de Entorno
+### Step 2: Set Up Environment Variables
 
-Copia el archivo `env.example` a un nuevo archivo llamado `.env` en la raíz del proyecto. El archivo debe contener las siguientes variables:
+Copy the `env.example` file to a new file named `.env` in the project root. The file should contain the following variables:
 
-**Archivo `.env`:**
+**`.env` file:**
 
 ```env
-# Base de datos (apuntando a Docker)
+# Database (pointing to Docker)
 DATABASE_URL="postgresql://avilatek_user:avilatek_password@localhost:5432/avilatek_db?schema=public"
 
 # JWT
-JWT_SECRET="tu-secreto-para-desarrollo"
+JWT_SECRET="your-development-secret"
 JWT_EXPIRES_IN="24h"
 
 # App
 PORT=3000
 NODE_ENV=development
 
-# Frontend (Opcional)
+# Frontend (Optional)
 FRONTEND_URL="http://localhost:3001"
 ```
 
-### Paso 3: Ejecutar la Aplicación
+### Step 3: Run the Application
 
-Una vez que la base de datos esté corriendo y el archivo `.env` esté configurado, abre una terminal en la raíz del proyecto y ejecuta los siguientes comandos en orden:
+Once the database is running and the `.env` file is configured, open a terminal in the project root and run the following commands in order:
 
 ```bash
-# 1. Instalar dependencias
+# 1. Install dependencies
 yarn install
 
-# 2. Aplicar las migraciones de la base de datos
+# 2. Apply database migrations
 npx prisma migrate deploy
 
-# 3. Generar el cliente de Prisma
+# 3. Generate the Prisma client
 npx prisma generate
 
-# 4. Iniciar el servidor en modo de desarrollo (con hot-reload)
+# 4. Start the server in development mode (with hot-reload)
 yarn start:dev
 ```
 
-La aplicación estará disponible en `http://localhost:3000` y la documentación de Swagger en `http://localhost:3000/api/docs`.
+The application will be available at `http://localhost:3000`, and the Swagger documentation at `http://localhost:3000/api/docs`.
 
-## Autenticación y Autorización
+## Authentication and Authorization
 
-### Autenticación Global
+### Global Authentication
 
-La aplicación utiliza **autenticación JWT global** que se aplica automáticamente a todos los endpoints. Esto significa que:
+The application uses **global JWT authentication**, which is automatically applied to all endpoints. This means:
 
-- **Por defecto**: Todos los endpoints requieren un token JWT válido
-- **Endpoints públicos**: Se marcan con el decorador `@Public()` para permitir acceso sin autenticación
+- **By default**: All endpoints require a valid JWT.
+- **Public endpoints**: Are marked with the `@Public()` decorator to allow access without authentication.
 
-### Decorador @Public
+### @Public Decorator
 
-Para marcar un endpoint como público (sin autenticación), usa el decorador `@Public()`:
+To mark an endpoint as public (no authentication required), use the `@Public()` decorator:
 
 ```typescript
 import { Public } from '../shared/domain/decorators/public.decorator';
@@ -128,25 +111,25 @@ export class AuthController {
   @Public()
   @Post('register')
   async register() {
-    // Este endpoint es público
+    // This endpoint is public
   }
 
   @Public()
   @Post('login')
   async login() {
-    // Este endpoint es público
+    // This endpoint is public
   }
 
   @Get('profile')
   async getProfile() {
-    // Este endpoint requiere autenticación (por defecto)
+    // This endpoint requires authentication (by default)
   }
 }
 ```
 
-### Uso de Tokens JWT
+### Using JWT Tokens
 
-Para endpoints protegidos, incluye el token JWT en el header de autorización:
+For protected endpoints, include the JWT in the authorization header:
 
 ```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
@@ -154,84 +137,84 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ## Endpoints
 
-### Autenticación (`/auth`)
+### Authentication (`/auth`)
 
-#### Registro de Usuario
+#### User Registration
 
 ```http
 POST /auth/register
 Content-Type: application/json
 
 {
-  "email": "usuario@ejemplo.com",
-  "password": "contraseña123",
-  "firstName": "Juan",
-  "lastName": "Pérez"
+  "email": "user@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe"
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Usuario registrado exitosamente",
+  "message": "User registered successfully",
   "data": {
     "id": "clx1234567890",
-    "email": "usuario@ejemplo.com"
+    "email": "user@example.com"
   }
 }
 ```
 
-#### Login de Usuario
+#### User Login
 
 ```http
 POST /auth/login
 Content-Type: application/json
 
 {
-  "email": "usuario@ejemplo.com",
-  "password": "contraseña123"
+  "email": "user@example.com",
+  "password": "password123"
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Login exitoso",
+  "message": "Login successful",
   "data": {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "user": {
       "id": "clx1234567890",
-      "email": "usuario@ejemplo.com",
-      "firstName": "Juan",
-      "lastName": "Pérez",
-      "fullName": "Juan Pérez"
+      "email": "user@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "fullName": "John Doe"
     }
   }
 }
 ```
 
-### Usuarios (`/users`)
+### Users (`/users`)
 
-#### Obtener Perfil de Usuario
+#### Get User Profile
 
 ```http
 GET /users/profile
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Perfil obtenido exitosamente",
+  "message": "Profile retrieved successfully",
   "data": {
     "id": "clx1234567890",
-    "email": "usuario@ejemplo.com",
-    "firstName": "Juan",
-    "lastName": "Pérez",
-    "fullName": "Juan Pérez",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "fullName": "John Doe",
     "isActive": true,
     "createdAt": "2024-01-01T00:00:00.000Z",
     "updatedAt": "2024-01-01T00:00:00.000Z"
@@ -239,9 +222,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-### Productos (`/products`)
+### Products (`/products`)
 
-#### Crear Producto
+#### Create Product
 
 ```http
 POST /products
@@ -249,42 +232,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Content-Type: application/json
 
 {
-  "name": "Laptop Gaming",
-  "description": "Laptop de alto rendimiento para gaming",
+  "name": "Gaming Laptop",
+  "description": "High-performance laptop for gaming",
   "price": 1299.99,
   "stock": 10
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Producto creado exitosamente",
+  "message": "Product created successfully",
   "data": {
     "id": "clx1234567890",
-    "name": "Laptop Gaming"
+    "name": "Gaming Laptop"
   }
 }
 ```
 
-#### Obtener Todos los Productos (con paginación)
+#### Get All Products (with pagination)
 
 ```http
 GET /products?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Productos obtenidos exitosamente",
+  "message": "Products retrieved successfully",
   "data": [
     {
       "id": "clx1234567890",
-      "name": "Laptop Gaming",
-      "description": "Laptop de alto rendimiento para gaming",
+      "name": "Gaming Laptop",
+      "description": "High-performance laptop for gaming",
       "price": 1299.99,
       "stock": 10,
       "isActive": true,
@@ -304,23 +287,23 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-#### Obtener Productos Disponibles (con paginación)
+#### Get Available Products (with pagination)
 
 ```http
 GET /products/available?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Productos disponibles obtenidos exitosamente",
+  "message": "Available products retrieved successfully",
   "data": [
     {
       "id": "clx1234567890",
-      "name": "Laptop Gaming",
-      "description": "Laptop de alto rendimiento para gaming",
+      "name": "Gaming Laptop",
+      "description": "High-performance laptop for gaming",
       "price": 1299.99,
       "stock": 10,
       "isActive": true,
@@ -340,22 +323,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-#### Obtener Producto por ID
+#### Get Product by ID
 
 ```http
 GET /products/clx1234567890
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Producto obtenido exitosamente",
+  "message": "Product retrieved successfully",
   "data": {
     "id": "clx1234567890",
-    "name": "Laptop Gaming",
-    "description": "Laptop de alto rendimiento para gaming",
+    "name": "Gaming Laptop",
+    "description": "High-performance laptop for gaming",
     "price": 1299.99,
     "stock": 10,
     "isActive": true,
@@ -366,7 +349,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-#### Actualizar Producto
+#### Update Product
 
 ```http
 PUT /products/clx1234567890
@@ -374,42 +357,42 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Content-Type: application/json
 
 {
-  "name": "Laptop Gaming Pro",
+  "name": "Gaming Laptop Pro",
   "price": 1499.99,
   "stock": 5
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Producto actualizado exitosamente",
+  "message": "Product updated successfully",
   "data": {
     "id": "clx1234567890",
-    "name": "Laptop Gaming Pro"
+    "name": "Gaming Laptop Pro"
   }
 }
 ```
 
-#### Eliminar Producto
+#### Delete Product
 
 ```http
 DELETE /products/clx1234567890
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Producto eliminado exitosamente"
+  "message": "Product deleted successfully"
 }
 ```
 
-### Pedidos (`/orders`)
+### Orders (`/orders`)
 
-#### Crear Pedido
+#### Create Order
 
 ```http
 POST /orders
@@ -430,11 +413,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Pedido creado exitosamente",
+  "message": "Order created successfully",
   "data": {
     "id": "clxabcdef1234",
     "totalAmount": 2599.98
@@ -442,18 +425,18 @@ Content-Type: application/json
 }
 ```
 
-#### Obtener Historial de Pedidos del Usuario (con paginación)
+#### Get User's Order History (with pagination)
 
 ```http
 GET /orders?page=1&limit=10
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Pedidos obtenidos exitosamente",
+  "message": "Orders retrieved successfully",
   "data": [
     {
       "id": "clxabcdef1234",
@@ -492,18 +475,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-#### Obtener Pedido por ID
+#### Get Order by ID
 
 ```http
 GET /orders/clxabcdef1234
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Pedido obtenido exitosamente",
+  "message": "Order retrieved successfully",
   "data": {
     "id": "clxabcdef1234",
     "userId": "clx1234567890",
@@ -532,7 +515,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 }
 ```
 
-#### Actualizar Estado del Pedido
+#### Update Order Status
 
 ```http
 PUT /orders/clxabcdef1234/status
@@ -544,11 +527,11 @@ Content-Type: application/json
 }
 ```
 
-**Respuesta:**
+**Response:**
 
 ```json
 {
-  "message": "Estado del pedido actualizado exitosamente",
+  "message": "Order status updated successfully",
   "data": {
     "id": "clxabcdef1234",
     "status": "CONFIRMED"
@@ -556,35 +539,35 @@ Content-Type: application/json
 }
 ```
 
-**Estados Disponibles:**
+**Available Statuses:**
 
-- `PENDING` - Pendiente
-- `CONFIRMED` - Confirmado
-- `SHIPPED` - Enviado
-- `DELIVERED` - Entregado
-- `CANCELLED` - Cancelado
+- `PENDING`
+- `CONFIRMED`
+- `SHIPPED`
+- `DELIVERED`
+- `CANCELLED`
 
-## Paginación
+## Pagination
 
-La API implementa paginación en todos los endpoints que devuelven listas:
+The API implements pagination on all endpoints that return lists:
 
-### Parámetros de Paginación
+### Pagination Parameters
 
-- `page`: Número de página (por defecto: 1)
-- `limit`: Elementos por página (por defecto: 10, máximo: 100)
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 10, max: 100)
 
-### Ejemplo de Uso
+### Example Usage
 
 ```http
 GET /products?page=2&limit=20
 GET /orders?page=1&limit=5
 ```
 
-### Respuesta con Paginación
+### Paginated Response
 
 ```json
 {
-  "message": "Datos obtenidos exitosamente",
+  "message": "Data retrieved successfully",
   "data": [...],
   "pagination": {
     "page": 2,
@@ -597,24 +580,24 @@ GET /orders?page=1&limit=5
 }
 ```
 
-## Optimizaciones de Rendimiento
+## Performance Optimizations
 
-### Índices de Base de Datos
+### Database Indexes
 
-La API incluye índices optimizados para mejorar el rendimiento:
+The API includes optimized indexes to improve query performance:
 
-- **Usuarios**: `email`, `isActive`
-- **Productos**: `isActive`, `isActive + stock`, `createdAt`
-- **Pedidos**: `userId`, `userId + createdAt`, `status`, `createdAt`
-- **Items de Pedido**: `orderId`, `productId`
+- **Users**: `email`, `isActive`
+- **Products**: `isActive`, `isActive + stock`, `createdAt`
+- **Orders**: `userId`, `userId + createdAt`, `status`, `createdAt`
+- **OrderItems**: `orderId`, `productId`
 
-### Consultas Optimizadas
+### Optimized Queries
 
-- **Paginación eficiente**: Uso de `skip` y `take` con índices apropiados
-- **Consultas paralelas**: Conteo y datos en paralelo para mejor rendimiento
-- **Relaciones optimizadas**: Carga eficiente de datos relacionados
+- **Efficient Pagination**: Uses `skip` and `take` with appropriate indexes.
+- **Parallel Queries**: Counts and data fetching run in parallel for better performance.
+- **Optimized Relations**: Efficient loading of related data.
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 src/
@@ -742,120 +725,106 @@ src/
 └── app.module.ts
 ```
 
-## Características Implementadas
+## Implemented Features
 
-### ✅ Autenticación de Usuario
+### ✅ User Authentication
 
-- [x] Registro de usuarios con validación
-- [x] Login con JWT
-- [x] Autenticación global con JWT
-- [x] Decorador @Public para endpoints públicos
-- [x] Hash seguro de contraseñas con bcrypt
-- [x] Validación de tokens JWT
+- [x] User registration with validation
+- [x] Login with JWT
+- [x] Global JWT authentication
+- [x] @Public decorator for public endpoints
+- [x] Secure password hashing with bcrypt
+- [x] JWT token validation
 
-### ✅ Gestión de Usuarios
+### ✅ User Management
 
-- [x] Creación de usuarios
-- [x] Consulta de usuarios por ID y email
-- [x] Endpoint de perfil de usuario
-- [x] Separación de responsabilidades entre módulos
+- [x] User creation
+- [x] Query users by ID and email
+- [x] User profile endpoint
+- [x] Separation of concerns between modules
 
-### ✅ Gestión de Inventario de Productos
+### ✅ Product Inventory Management
 
-- [x] Crear productos con nombre, descripción, precio y stock
-- [x] Actualizar productos (parcial o completo)
-- [x] Eliminar productos
-- [x] Listar todos los productos (activos/inactivos) con paginación
-- [x] Listar productos disponibles (activos con stock > 0) con paginación
-- [x] Obtener producto por ID
-- [x] Validación de datos con class-validator
-- [x] Control de disponibilidad de stock
+- [x] Create products with name, description, price, and stock
+- [x] Update products (partial or full)
+- [x] Delete products
+- [x] List all products (active/inactive) with pagination
+- [x] List available products (active with stock > 0) with pagination
+- [x] Get product by ID
+- [x] Data validation with class-validator
+- [x] Stock availability control
 
-### ✅ Procesamiento de Pedidos de Clientes
+### ✅ Customer Order Processing
 
-- [x] Crear pedidos con múltiples productos
-- [x] Validación de stock en tiempo real
-- [x] Actualización automática de inventario
-- [x] Historial de pedidos por usuario con paginación
-- [x] Obtener pedido específico por ID
-- [x] Actualizar estado de pedidos
-- [x] Estados de pedido: PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
-- [x] Cálculo automático de totales
-- [x] Validación de propiedad de pedidos (solo el propietario puede ver/modificar)
+- [x] Create orders with multiple products
+- [x] Real-time stock validation
+- [x] Automatic inventory updates
+- [x] Order history per user with pagination
+- [x] Get specific order by ID
+- [x] Update order status
+- [x] Order statuses: PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
+- [x] Automatic total calculation
+- [x] Order ownership validation (only the owner can view/modify)
 
-### ✅ Escalabilidad y Eficiencia
+### ✅ Scalability and Efficiency
 
-- [x] **Paginación completa** en todos los listados
-- [x] **Índices de base de datos** optimizados para consultas frecuentes
-- [x] **Consultas paralelas** para mejor rendimiento
-- [x] **Arquitectura modular** que permite escalar horizontalmente
-- [x] **CQRS** que separa operaciones de lectura y escritura
-- [x] **Validación de límites** para prevenir sobrecarga
+- [x] **Full pagination** on all listings
+- [x] **Optimized database indexes** for frequent queries
+- [x] **Parallel queries** for better performance
+- [x] **Modular architecture** allowing for horizontal scaling
+- [x] **CQRS** separating read and write operations
+- [x] **Rate limiting** to prevent overload
 
-### ✅ Almacenamiento y Gestión de Datos
+### ✅ Data Storage and Management
 
-- [x] **PostgreSQL** como base de datos principal
-- [x] **Esquemas bien definidos** con relaciones entre entidades
-- [x] **Integridad referencial** con claves foráneas
-- [x] **Migraciones automáticas** con Prisma
-- [x] **Validaciones a nivel de base de datos**
-- [x] **Consistencia de datos** garantizada por transacciones
+- [x] **PostgreSQL** as the main database
+- [x] **Well-defined schemas** with entity relationships
+- [x] **Referential integrity** with foreign keys
+- [x] **Automatic migrations** with Prisma
+- [x] **Database-level validations**
+- [x] **Data consistency** guaranteed by transactions
 
-### ✅ Arquitectura Hexagonal
+### ✅ Hexagonal Architecture
 
-- [x] Separación clara de capas (Domain, Application, Infrastructure, Presentation)
-- [x] Inversión de dependencias con interfaces
-- [x] Inyección de dependencias con tokens
-- [x] Módulos independientes con responsabilidades específicas
+- [x] Clear separation of layers (Domain, Application, Infrastructure, Presentation)
+- [x] Dependency inversion with interfaces
+- [x] Dependency injection with tokens
+- [x] Independent modules with specific responsibilities
 
 ### ✅ CQRS
 
-- [x] Comandos para operaciones de escritura (registro, login, CRUD de productos, pedidos)
-- [x] Consultas para operaciones de lectura (perfil, búsqueda de productos, historial de pedidos)
-- [x] Handlers especializados para cada operación
-- [x] Comunicación entre módulos a través de CommandBus/QueryBus
+- [x] Commands for write operations (register, login, product CRUD, orders)
+- [x] Queries for read operations (profile, product search, order history)
+- [x] Specialized handlers for each operation
+- [x] Inter-module communication via CommandBus/QueryBus
 
-### ✅ Seguridad
+### ✅ Security
 
-- [x] Validación de datos con class-validator
-- [x] Hash de contraseñas
-- [x] Tokens JWT con expiración
-- [x] Protección automática de rutas sensibles
-- [x] Endpoints públicos controlados
-- [x] Validación de propiedad de recursos
+- [x] Data validation with class-validator
+- [x] Password hashing
+- [x] JWTs with expiration
+- [x] Automatic protection of sensitive routes
+- [x] Controlled public endpoints
+- [x] Resource ownership validation
 
-## Próximos Pasos
+## Next Steps
 
-1. **Gestión de Clientes**: Información adicional de usuarios
-2. **Tests**: Unitarios e integración
-3. **Documentación**: Swagger/OpenAPI
-4. **Logging**: Sistema de logs estructurados
-5. **Monitoreo**: Métricas y health checks
-6. **Pagos**: Integración con pasarelas de pago
-7. **Notificaciones**: Sistema de notificaciones por email/SMS
-8. **Caché**: Implementación de Redis para consultas frecuentes
-9. **CDN**: Para imágenes y assets estáticos
-10. **Load Balancing**: Para distribución de carga
+1. **Customer Management**: Additional user information
+2. **Tests**: Unit and integration
+3. **Documentation**: Swagger/OpenAPI
+4. **Logging**: Structured logging system
+5. **Monitoring**: Metrics and health checks
+6. **Payments**: Integration with payment gateways
+7. **Notifications**: Email/SMS notification system
+8. **Caching**: Redis implementation for frequent queries
+9. **CDN**: For images and static assets
+10. **Load Balancing**: For traffic distribution
 
-## Autor
+## Author
 
 **Angel Morante**
 
 - **Bento:** [bento.me/angel-morante](https://bento.me/angel-morante)
-- **Sitio Web:** [angel-morante.vercel.app](https://angel-morante.vercel.app/)
+- **Website:** [angel-morante.vercel.app](https://angel-morante.vercel.app/)
 - **LinkedIn:** [Angel Morante](https://www.linkedin.com/in/angel-morante-aa76461a9/)
 - **Twitter:** [@theangelmorante](https://twitter.com/theangelmorante)
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
