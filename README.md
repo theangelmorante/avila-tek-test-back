@@ -136,7 +136,7 @@ For protected endpoints, include the JWT in the authorization header:
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-## Endpoints
+<!-- ## Endpoints
 
 ### Authentication (`/auth`)
 
@@ -546,7 +546,7 @@ Content-Type: application/json
 - `CONFIRMED`
 - `SHIPPED`
 - `DELIVERED`
-- `CANCELLED`
+- `CANCELLED` -->
 
 ## Pagination
 
@@ -897,24 +897,23 @@ The coverage report will be shown in the terminal and a detailed HTML report wil
 
 ### Current Coverage Example
 
-```
-File                                         % Stmts % Branch % Funcs % Lines Uncovered Line #s
-All files                                      99.2     100     100   99.09
- auth/application/handlers/login-user.handler.ts   100     100     100     100
- auth/application/handlers/register-user.handler.ts 100     100     100     100
- orders/application/handlers/create-order.handler.ts 100     100     100     100
- orders/application/handlers/get-order-by-id.handler.ts 100     100     100     100
- orders/application/handlers/get-user-orders.handler.ts 100     100     100     100
- orders/application/handlers/update-order-status.handler.ts 100     100     100     100
- products/application/handlers/create-product.handler.ts 100     100     100     100
- products/application/handlers/delete-product.handler.ts 100     100     100     100
- products/application/handlers/get-all-products.handler.ts 87.5     100     100   85.71   36-40
- products/application/handlers/get-available-products.handler.ts 100     100     100     100
- products/application/handlers/get-product-by-id.handler.ts 100     100     100     100
- products/application/handlers/update-product.handler.ts 100     100     100     100
- users/application/handlers/create-user.handler.ts 100     100     100     100
- users/application/handlers/get-user-by-email.handler.ts 100     100     100     100
- users/application/handlers/get-user-by-id.handler.ts 100     100     100     100
-```
+| File                                                              | % Stmts  | % Branch | % Funcs | % Lines   | Uncovered Line #s |
+| ----------------------------------------------------------------- | -------- | -------- | ------- | --------- | ----------------- |
+| **All files**                                                     | **99.2** | **100**  | **100** | **99.09** | -                 |
+| `auth/application/handlers/login-user.handler.ts`                 | 100      | 100      | 100     | 100       | -                 |
+| `auth/application/handlers/register-user.handler.ts`              | 100      | 100      | 100     | 100       | -                 |
+| `orders/application/handlers/create-order.handler.ts`             | 100      | 100      | 100     | 100       | -                 |
+| `orders/application/handlers/get-order-by-id.handler.ts`          | 100      | 100      | 100     | 100       | -                 |
+| `orders/application/handlers/get-user-orders.handler.ts`          | 100      | 100      | 100     | 100       | -                 |
+| `orders/application/handlers/update-order-status.handler.ts`      | 100      | 100      | 100     | 100       | -                 |
+| `products/application/handlers/create-product.handler.ts`         | 100      | 100      | 100     | 100       | -                 |
+| `products/application/handlers/delete-product.handler.ts`         | 100      | 100      | 100     | 100       | -                 |
+| `products/application/handlers/get-all-products.handler.ts`       | 87.5     | 100      | 100     | 85.71     | 36-40             |
+| `products/application/handlers/get-available-products.handler.ts` | 100      | 100      | 100     | 100       | -                 |
+| `products/application/handlers/get-product-by-id.handler.ts`      | 100      | 100      | 100     | 100       | -                 |
+| `products/application/handlers/update-product.handler.ts`         | 100      | 100      | 100     | 100       | -                 |
+| `users/application/handlers/create-user.handler.ts`               | 100      | 100      | 100     | 100       | -                 |
+| `users/application/handlers/get-user-by-email.handler.ts`         | 100      | 100      | 100     | 100       | -                 |
+| `users/application/handlers/get-user-by-id.handler.ts`            | 100      | 100      | 100     | 100       | -                 |
 
 All main business logic handlers are covered at nearly 100%.
