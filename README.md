@@ -648,116 +648,62 @@ src/
 │   ├── auth/
 │   │   ├── application/
 │   │   │   ├── commands/
-│   │   │   │   ├── register-user.command.ts
-│   │   │   │   └── login-user.command.ts
 │   │   │   └── handlers/
-│   │   │       ├── register-user.handler.ts
-│   │   │       └── login-user.handler.ts
 │   │   ├── domain/
 │   │   │   ├── services/
-│   │   │   │   └── auth.service.interface.ts
 │   │   │   └── tokens.ts
 │   │   ├── infrastructure/
 │   │   │   ├── services/
-│   │   │   │   └── auth.service.ts
 │   │   │   ├── strategies/
-│   │   │   │   └── jwt.strategy.ts
 │   │   │   └── guards/
-│   │   │       └── jwt-auth.guard.ts
 │   │   └── presentation/
 │   │       └── http/
 │   │           ├── controllers/
-│   │           │   └── auth.controller.ts
 │   │           └── dto/
-│   │               ├── register-user.dto.ts
-│   │               └── login-user.dto.ts
 │   ├── users/
 │   │   ├── application/
 │   │   │   ├── commands/
-│   │   │   │   └── create-user.command.ts
 │   │   │   ├── queries/
-│   │   │   │   ├── get-user-by-id.query.ts
-│   │   │   │   └── get-user-by-email.query.ts
 │   │   │   └── handlers/
-│   │   │       ├── create-user.handler.ts
-│   │   │       ├── get-user-by-id.handler.ts
-│   │   │       └── get-user-by-email.handler.ts
 │   │   ├── domain/
 │   │   │   ├── entities/
-│   │   │   │   └── user.entity.ts
 │   │   │   ├── repositories/
-│   │   │   │   └── user.repository.interface.ts
 │   │   │   └── tokens.ts
 │   │   ├── infrastructure/
 │   │   │   └── persistence/
-│   │   │       └── prisma-user.repository.ts
 │   │   └── presentation/
 │   │       └── http/
 │   │           └── controllers/
-│   │               └── users.controller.ts
 │   ├── products/
 │   │   ├── application/
 │   │   │   ├── commands/
-│   │   │   │   ├── create-product.command.ts
-│   │   │   │   ├── update-product.command.ts
-│   │   │   │   └── delete-product.command.ts
 │   │   │   ├── queries/
-│   │   │   │   ├── get-product-by-id.query.ts
-│   │   │   │   ├── get-all-products.query.ts
-│   │   │   │   └── get-available-products.query.ts
 │   │   │   └── handlers/
-│   │   │       ├── create-product.handler.ts
-│   │   │       ├── update-product.handler.ts
-│   │   │       ├── delete-product.handler.ts
-│   │   │       ├── get-product-by-id.handler.ts
-│   │   │       ├── get-all-products.handler.ts
-│   │   │       └── get-available-products.handler.ts
 │   │   ├── domain/
 │   │   │   ├── entities/
-│   │   │   │   └── product.entity.ts
 │   │   │   ├── repositories/
-│   │   │   │   └── product.repository.interface.ts
 │   │   │   └── tokens.ts
 │   │   ├── infrastructure/
 │   │   │   └── persistence/
-│   │   │       └── prisma-product.repository.ts
 │   │   └── presentation/
 │   │       └── http/
 │   │           ├── controllers/
-│   │           │   └── products.controller.ts
 │   │           └── dto/
-│   │               ├── create-product.dto.ts
-│   │               └── update-product.dto.ts
 │   └── orders/
 │       ├── application/
 │       │   ├── commands/
-│       │   │   ├── create-order.command.ts
-│       │   │   └── update-order-status.command.ts
 │       │   ├── queries/
-│       │   │   ├── get-order-by-id.query.ts
-│       │   │   └── get-user-orders.query.ts
 │       │   └── handlers/
-│       │       ├── create-order.handler.ts
-│       │       ├── update-order-status.handler.ts
-│       │       ├── get-order-by-id.handler.ts
-│       │       └── get-user-orders.handler.ts
 │       ├── domain/
 │       │   ├── entities/
-│       │   │   ├── order.entity.ts
-│       │   │   └── order-item.entity.ts
 │       │   ├── repositories/
-│       │   │   └── order.repository.interface.ts
 │       │   └── tokens.ts
 │       ├── infrastructure/
 │       │   └── persistence/
-│       │       └── prisma-order.repository.ts
 │       └── presentation/
 │           └── http/
 │               ├── controllers/
-│               │   └── orders.controller.ts
 │               └── dto/
-│                   ├── create-order.dto.ts
-│                   └── update-order-status.dto.ts
 ├── shared/
 │   ├── domain/
 │   │   └── decorators/
