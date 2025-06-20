@@ -1,39 +1,43 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { GetAllProductsQuery } from '../queries/get-all-products.query';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@QueryHandler(GetAllProductsQuery)
 export class GetAllProductsHandler
   implements IQueryHandler<GetAllProductsQuery>
 {
+  private readonly logger = new Logger(GetAllProductsHandler.name);
+
   constructor(
     @Inject(PRODUCT_REPOSITORY)
     private readonly productRepository: IProductRepository,
   ) {}
 
-  async execute(query: GetAllProductsQuery): Promise<any> {
-    const { includeInactive, page, limit } = query;
-
-    const result = await this.productRepository.findAll(
-      includeInactive,
-      page,
-      limit,
+  async execute(query: GetAllProductsQuery) {
+    this.logger.log(
+      `Ejecutando query GetAllProductsQuery - Página: ${query.page}, Límite: ${query.limit}, Incluir inactivos: ${query.includeInactive}`,
     );
 
-    return {
-      data: result.data.map((product) => ({
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        stock: product.stock,
-        isActive: product.isActive,
-        isAvailable: product.isAvailable(),
-        createdAt: product.createdAt,
-        updatedAt: product.updatedAt,
-      })),
-      pagination: result.pagination,
-    };
+    try {
+      const result = await this.productRepository.findAll(
+        query.includeInactive,
+        query.page,
+        query.limit,
+      );
+
+      this.logger.log(
+        `Productos obtenidos: ${result.data.length} de ${result.pagination.total} totales`,
+      );
+
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `Error al obtener productos: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
   }
 }
