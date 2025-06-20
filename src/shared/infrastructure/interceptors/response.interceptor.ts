@@ -17,6 +17,7 @@ export interface StandardResponse<T> {
   timestamp: string;
   path: string;
   method: string;
+  pagination?: any;
 }
 
 export interface ErrorResponse {
@@ -112,6 +113,7 @@ export class ResponseInterceptor<T>
             code: statusCode,
             message: data.message,
             data: data.data,
+            pagination: data.pagination,
             timestamp,
             path: url,
             method,

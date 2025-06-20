@@ -9,15 +9,10 @@ export class OrderItem {
     public readonly updatedAt: Date = new Date(),
   ) {}
 
-  static create(
-    orderId: string,
-    productId: string,
-    quantity: number,
-    price: number,
-  ): OrderItem {
+  static create(productId: string, quantity: number, price: number): OrderItem {
     return new OrderItem(
       undefined as any, // ID será generado por la base de datos
-      orderId,
+      undefined as any, // orderId se asigna en la capa de persistencia
       productId,
       quantity,
       price,

@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Param,
-  Request,
   HttpCode,
   HttpStatus,
   Logger,
@@ -26,61 +25,35 @@ export class UsersController {
 
   constructor(private readonly queryBus: QueryBus) {}
 
-  @Get('profile')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({
-    summary: 'Obtener perfil del usuario autenticado',
-    description:
-      'Obtiene la información del perfil del usuario actualmente autenticado',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Perfil obtenido exitosamente',
-  })
-  async getProfile(@Request() req: any) {
-    const userId = req.user.id;
-    this.logger.log(`Obteniendo perfil del usuario: ${userId}`);
-
-    const query = new GetUserByIdQuery(userId);
-    const user = await this.queryBus.execute(query);
-
-    this.logger.log(`Perfil obtenido: ${user.email}`);
-
-    return {
-      message: 'Perfil obtenido exitosamente',
-      data: user,
-    };
-  }
-
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener usuario por ID',
-    description: 'Obtiene la información de un usuario específico por su ID',
+    summary: 'Get user by ID',
+    description: 'Get the information of a specific user by their ID',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del usuario',
+    description: 'User ID',
     example: 'clx1234567890',
   })
   @ApiResponse({
     status: 200,
-    description: 'Usuario obtenido exitosamente',
+    description: 'User obtained successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Usuario no encontrado',
+    description: 'User not found',
   })
   async getUserById(@Param('id') id: string) {
-    this.logger.log(`Obteniendo usuario por ID: ${id}`);
+    this.logger.log(`Getting user by ID: ${id}`);
 
     const query = new GetUserByIdQuery(id);
     const user = await this.queryBus.execute(query);
 
-    this.logger.log(`Usuario obtenido: ${user.email}`);
+    this.logger.log(`User obtained: ${user.email}`);
 
     return {
-      message: 'Usuario obtenido exitosamente',
+      message: 'User obtained successfully',
       data: user,
     };
   }
@@ -88,32 +61,29 @@ export class UsersController {
   @Get('email/:email')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener usuario por email',
-    description: 'Obtiene la información de un usuario específico por su email',
+    summary: 'Get user by email',
+    description: 'Get the information of a specific user by their email',
   })
   @ApiParam({
     name: 'email',
-    description: 'Email del usuario',
+    description: 'User email',
     example: 'usuario@ejemplo.com',
   })
   @ApiResponse({
     status: 200,
-    description: 'Usuario obtenido exitosamente',
+    description: 'User obtained successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Usuario no encontrado',
+    description: 'User not found',
   })
   async getUserByEmail(@Param('email') email: string) {
-    this.logger.log(`Obteniendo usuario por email: ${email}`);
+    this.logger.log(`Getting user by email: ${email}`);
 
     const query = new GetUserByEmailQuery(email);
     const user = await this.queryBus.execute(query);
-
-    this.logger.log(`Usuario obtenido: ${user.id}`);
-
     return {
-      message: 'Usuario obtenido exitosamente',
+      message: 'User obtained successfully',
       data: user,
     };
   }

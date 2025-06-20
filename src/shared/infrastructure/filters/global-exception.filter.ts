@@ -55,12 +55,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let details: any = undefined;
 
     if (exception instanceof HttpException) {
-      console.log('exception HttpException', exception);
       statusCode = exception.getStatus();
       const exceptionResponse = exception.getResponse();
 
       if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
-        console.log('exceptionResponse', exceptionResponse);
         const responseObj = exceptionResponse as any;
         message = responseObj.message || this.getErrorMessage(statusCode);
         errorMessage = responseObj.error || exception.message;
@@ -70,12 +68,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         errorMessage = exception.message;
       }
     } else if (exception instanceof Error) {
-      console.log('exception Error', exception);
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
       message = this.getErrorMessage(statusCode);
       errorMessage = exception.message;
     } else {
-      console.log('exception else', exception);
       statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
       message = this.getErrorMessage(statusCode);
       errorMessage = 'Unknown error';

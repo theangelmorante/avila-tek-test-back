@@ -8,7 +8,6 @@ import {
   Query,
   HttpCode,
   HttpStatus,
-  Request,
   Logger,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -28,6 +27,7 @@ import { UpdateOrderStatusCommand } from '../../../application/commands/update-o
 import { GetOrderByIdQuery } from '../../../application/queries/get-order-by-id.query';
 import { GetUserOrdersQuery } from '../../../application/queries/get-user-orders.query';
 import { PaginationDto } from '../../../../../shared/domain/dto/pagination.dto';
+import { CurrentUser } from '../../../../../shared/domain/decorators/current-user.decorator';
 
 @ApiTags('orders')
 @ApiBearerAuth('JWT-auth')
@@ -60,20 +60,20 @@ export class OrdersController {
   })
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
-    @Request() req: any,
+    @CurrentUser() user: { id: string },
   ) {
-    const userId = req.user.id;
-    this.logger.log(`Creando pedido para usuario: ${userId}`);
+    const userId = user.id;
+    this.logger.log(`Creating order for user: ${userId}`);
 
     const command = new CreateOrderCommand(userId, createOrderDto.items);
     const result = await this.commandBus.execute(command);
 
     this.logger.log(
-      `Pedido creado exitosamente: ${result.id} - Total: $${result.totalAmount}`,
+      `Order created successfully: ${result.id} - Total: $${result.totalAmount}`,
     );
 
     return {
-      message: 'Pedido creado exitosamente',
+      message: 'Order created successfully',
       data: result,
     };
   }
@@ -101,15 +101,15 @@ export class OrdersController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Pedidos obtenidos exitosamente',
+    description: 'Orders obtained successfully',
   })
   async getUserOrders(
-    @Request() req: any,
+    @CurrentUser() user: { id: string },
     @Query() paginationDto?: PaginationDto,
   ) {
-    const userId = req.user.id;
+    const userId = user.id;
     this.logger.log(
-      `Obteniendo pedidos del usuario: ${userId} (página: ${paginationDto?.page || 1})`,
+      `Getting orders for user: ${userId} (page: ${paginationDto?.page || 1})`,
     );
 
     const query = new GetUserOrdersQuery(
@@ -120,12 +120,13 @@ export class OrdersController {
     const result = await this.queryBus.execute(query);
 
     this.logger.log(
-      `Pedidos obtenidos: ${result.data.length} de ${result.pagination.total}`,
+      `Orders obtained: ${result.data.length} of ${result.pagination.total}`,
     );
 
     return {
-      message: 'Pedidos obtenidos exitosamente',
-      ...result,
+      message: 'Orders obtained successfully',
+      data: result.data,
+      pagination: result.pagination,
     };
   }
 
@@ -143,23 +144,26 @@ export class OrdersController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Pedido obtenido exitosamente',
+    description: 'Order obtained successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Pedido no encontrado',
+    description: 'Order not found',
   })
-  async getOrderById(@Param('id') id: string, @Request() req: any) {
-    const userId = req.user.id;
-    this.logger.log(`Obteniendo pedido: ${id} para usuario: ${userId}`);
+  async getOrderById(
+    @Param('id') id: string,
+    @CurrentUser() user: { id: string },
+  ) {
+    const userId = user.id;
+    this.logger.log(`Getting order: ${id} for user: ${userId}`);
 
     const query = new GetOrderByIdQuery(id, userId);
     const order = await this.queryBus.execute(query);
 
-    this.logger.log(`Pedido obtenido: ${order.id} - Estado: ${order.status}`);
+    this.logger.log(`Order obtained: ${order.id} - Status: ${order.status}`);
 
     return {
-      message: 'Pedido obtenido exitosamente',
+      message: 'Order obtained successfully',
       data: order,
     };
   }
@@ -181,24 +185,24 @@ export class OrdersController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Estado del pedido actualizado exitosamente',
+    description: 'Order status updated successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Pedido no encontrado',
+    description: 'Order not found',
   })
   @ApiResponse({
     status: 400,
-    description: 'No se puede actualizar el estado de este pedido',
+    description: 'Cannot update order status',
   })
   async updateOrderStatus(
     @Param('id') id: string,
     @Body() updateOrderStatusDto: UpdateOrderStatusDto,
-    @Request() req: any,
+    @CurrentUser() user: { id: string },
   ) {
-    const userId = req.user.id;
+    const userId = user.id;
     this.logger.log(
-      `Actualizando estado del pedido: ${id} a ${updateOrderStatusDto.status} para usuario: ${userId}`,
+      `Updating order status: ${id} to ${updateOrderStatusDto.status} for user: ${userId}`,
     );
 
     const command = new UpdateOrderStatusCommand(
@@ -209,11 +213,11 @@ export class OrdersController {
     const result = await this.commandBus.execute(command);
 
     this.logger.log(
-      `Estado del pedido actualizado: ${result.id} - Nuevo estado: ${result.status}`,
+      `Order status updated: ${result.id} - New status: ${result.status}`,
     );
 
     return {
-      message: 'Estado del pedido actualizado exitosamente',
+      message: 'Order status updated successfully',
       data: result,
     };
   }

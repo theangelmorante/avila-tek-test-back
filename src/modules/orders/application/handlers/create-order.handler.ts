@@ -1,5 +1,5 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject, Logger } from '@nestjs/common';
+import { CommandBus, CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { Inject, Logger, BadRequestException } from '@nestjs/common';
 import { CreateOrderCommand } from '../commands/create-order.command';
 import { IOrderRepository } from '../../domain/repositories/order.repository.interface';
 import { IProductRepository } from '../../../products/domain/repositories/product.repository.interface';
@@ -7,12 +7,14 @@ import { ORDER_REPOSITORY } from '../../domain/tokens';
 import { PRODUCT_REPOSITORY } from '../../../products/domain/tokens';
 import { Order } from '../../domain/entities/order.entity';
 import { OrderItem } from '../../domain/entities/order-item.entity';
+import { UpdateProductCommand } from '../../../products/application/commands/update-product.command';
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   private readonly logger = new Logger(CreateOrderHandler.name);
 
   constructor(
+    private readonly commandBus: CommandBus,
     @Inject(ORDER_REPOSITORY)
     private readonly orderRepository: IOrderRepository,
     @Inject(PRODUCT_REPOSITORY)
@@ -39,38 +41,51 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
         const product = await this.productRepository.findById(item.productId);
         if (!product) {
           this.logger.warn(`Product not found: ${item.productId}`);
-          throw new Error(`Product with ID ${item.productId} not found`);
+          throw new BadRequestException(
+            `Product with ID ${item.productId} not found`,
+          );
         }
 
         if (!product.isActive) {
           this.logger.warn(`Product inactive: ${item.productId}`);
-          throw new Error(`Product with ID ${item.productId} is not available`);
+          throw new BadRequestException(
+            `Product with ID ${item.productId} is not available`,
+          );
         }
 
         if (product.stock < item.quantity) {
           this.logger.warn(
             `Insufficient stock for product: ${item.productId} - Stock: ${product.stock}, Requested: ${item.quantity}`,
           );
-          throw new Error(`Insufficient stock for product ${product.name}`);
+          throw new BadRequestException(
+            `Insufficient stock for product ${product.name}`,
+          );
         }
 
         // Create the order item
         const orderItem = OrderItem.create(
           item.productId,
-          product.name,
-          product.price,
           item.quantity,
+          product.price,
         );
 
         orderItems.push(orderItem);
         totalAmount += product.price * item.quantity;
 
-        // Update the product stock
-        product.updateStock(product.stock - item.quantity);
-        await this.productRepository.save(product);
+        // Dispatch command to update the product stock
+        const newStock = product.stock - item.quantity;
+        await this.commandBus.execute(
+          new UpdateProductCommand(
+            item.productId,
+            undefined,
+            undefined,
+            undefined,
+            newStock,
+          ),
+        );
 
         this.logger.debug(
-          `Stock updated for product: ${item.productId} - New stock: ${product.stock}`,
+          `Stock update command dispatched for product: ${item.productId} - New stock: ${newStock}`,
         );
       }
 

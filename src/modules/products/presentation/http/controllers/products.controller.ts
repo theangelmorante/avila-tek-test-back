@@ -61,7 +61,7 @@ export class ProductsController {
     description: 'Datos de entrada inválidos',
   })
   async createProduct(@Body() createProductDto: CreateProductDto) {
-    this.logger.log(`Creando producto: ${createProductDto.name}`);
+    this.logger.log(`Creating product: ${createProductDto.name}`);
 
     const command = new CreateProductCommand(
       createProductDto.name,
@@ -72,10 +72,10 @@ export class ProductsController {
 
     const result = await this.commandBus.execute(command);
 
-    this.logger.log(`Producto creado exitosamente: ${result.id}`);
+    this.logger.log(`Product created successfully: ${result.id}`);
 
     return {
-      message: 'Producto creado exitosamente',
+      message: 'Product created successfully',
       data: result,
     };
   }
@@ -126,12 +126,13 @@ export class ProductsController {
     const result = await this.queryBus.execute(query);
 
     this.logger.log(
-      `Productos obtenidos: ${result.data.length} de ${result.pagination.total}`,
+      `Products obtained: ${result.data.length} of ${result.pagination.total}`,
     );
 
     return {
-      message: 'Productos obtenidos exitosamente',
-      ...result,
+      message: 'Products obtained successfully',
+      data: result.data,
+      pagination: result.pagination,
     };
   }
 
@@ -158,11 +159,11 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Productos disponibles obtenidos exitosamente',
+    description: 'Available products obtained successfully',
   })
   async getAvailableProducts(@Query() paginationDto?: PaginationDto) {
     this.logger.log(
-      `Obteniendo productos disponibles (página: ${paginationDto?.page || 1})`,
+      `Getting available products (page: ${paginationDto?.page || 1})`,
     );
 
     const query = new GetAvailableProductsQuery(
@@ -172,12 +173,13 @@ export class ProductsController {
     const result = await this.queryBus.execute(query);
 
     this.logger.log(
-      `Productos disponibles obtenidos: ${result.data.length} de ${result.pagination.total}`,
+      `Available products obtained: ${result.data.length} of ${result.pagination.total}`,
     );
 
     return {
-      message: 'Productos disponibles obtenidos exitosamente',
-      ...result,
+      message: 'Available products obtained successfully',
+      data: result.data,
+      pagination: result.pagination,
     };
   }
 
@@ -194,22 +196,22 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Producto obtenido exitosamente',
+    description: 'Product obtained successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Producto no encontrado',
+    description: 'Product not found',
   })
   async getProductById(@Param('id') id: string) {
-    this.logger.log(`Obteniendo producto por ID: ${id}`);
+    this.logger.log(`Getting product by ID: ${id}`);
 
     const query = new GetProductByIdQuery(id);
     const product = await this.queryBus.execute(query);
 
-    this.logger.log(`Producto obtenido: ${product.name}`);
+    this.logger.log(`Product obtained: ${product.name}`);
 
     return {
-      message: 'Producto obtenido exitosamente',
+      message: 'Product obtained successfully',
       data: product,
     };
   }
@@ -231,17 +233,17 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 200,
-    description: 'Producto actualizado exitosamente',
+    description: 'Product updated successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Producto no encontrado',
+    description: 'Product not found',
   })
   async updateProduct(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    this.logger.log(`Actualizando producto: ${id}`);
+    this.logger.log(`Updating product: ${id}`);
 
     const command = new UpdateProductCommand(
       id,
@@ -254,10 +256,10 @@ export class ProductsController {
 
     const result = await this.commandBus.execute(command);
 
-    this.logger.log(`Producto actualizado exitosamente: ${result.id}`);
+    this.logger.log(`Product updated successfully: ${result.id}`);
 
     return {
-      message: 'Producto actualizado exitosamente',
+      message: 'Product updated successfully',
       data: result,
     };
   }
@@ -275,22 +277,22 @@ export class ProductsController {
   })
   @ApiResponse({
     status: 204,
-    description: 'Producto eliminado exitosamente',
+    description: 'Product deleted successfully',
   })
   @ApiResponse({
     status: 404,
-    description: 'Producto no encontrado',
+    description: 'Product not found',
   })
   async deleteProduct(@Param('id') id: string) {
-    this.logger.log(`Eliminando producto: ${id}`);
+    this.logger.log(`Deleting product: ${id}`);
 
     const command = new DeleteProductCommand(id);
     await this.commandBus.execute(command);
 
-    this.logger.log(`Producto eliminado exitosamente: ${id}`);
+    this.logger.log(`Product deleted successfully: ${id}`);
 
     return {
-      message: 'Producto eliminado exitosamente',
+      message: 'Product deleted successfully',
     };
   }
 }
