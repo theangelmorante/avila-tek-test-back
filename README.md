@@ -1,10 +1,3 @@
-<p align="center">
-  <a href="https://www.avilatek.com/en" target="blank"><img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.unimet.edu.ve%2Fservicios-ingenieria%2F&psig=AOvVaw3ONfuxVpNdvf0uTW5-LP5Z&ust=1750510962438000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCW5dSHgI4DFQAAAAAdAAAAABAE" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.unimet.edu.ve%2Fservicios-ingenieria%2F&psig=AOvVaw3ONfuxVpNdvf0uTW5-LP5Z&ust=1750510962438000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCLCW5dSHgI4DFQAAAAAdAAAAABAE
-[circleci-url]: https://www.avilatek.com/en
-
 # Avila Tek E-commerce API
 
 Scalable REST API for an e-commerce platform built with NestJS, TypeScript, and Prisma.
