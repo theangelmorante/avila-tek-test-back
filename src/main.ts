@@ -8,6 +8,11 @@ import {
   GlobalExceptionFilter,
   ValidationPipe as CustomValidationPipe,
 } from './shared/infrastructure';
+import {
+  corsOptions,
+  helmetOptions,
+} from './shared/infrastructure/config/security.config';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
@@ -17,6 +22,12 @@ async function bootstrap() {
       logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     });
 
+    // Configure Helmet for security headers
+    app.use(helmet(helmetOptions));
+
+    // Configure CORS with specific options
+    app.enableCors(corsOptions);
+
     // Configure global pipes
     app.useGlobalPipes(new CustomValidationPipe());
 
@@ -25,12 +36,6 @@ async function bootstrap() {
 
     // Configure global response interceptor
     app.useGlobalInterceptors(new ResponseInterceptor());
-
-    // Configure CORS
-    app.enableCors({
-      origin: true,
-      credentials: true,
-    });
 
     // Configure Swagger
     const config = new DocumentBuilder()
@@ -68,6 +73,7 @@ async function bootstrap() {
     logger.log(
       `📚 Swagger documentation available at: http://localhost:${port}/api/docs`,
     );
+    logger.log(`🔒 Security headers and CORS configured`);
   } catch (error) {
     logger.error('❌ Error starting application:', error);
     process.exit(1);

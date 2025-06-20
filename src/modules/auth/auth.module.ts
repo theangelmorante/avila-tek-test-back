@@ -3,6 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 
 // Domain
 import { AUTH_SERVICE } from './domain/tokens';
@@ -51,7 +52,10 @@ const CommandHandlers = [RegisterUserHandler, LoginUserHandler];
 
     // Infrastructure
     JwtStrategy,
-    JwtAuthGuard,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
   exports: [AUTH_SERVICE],
 })

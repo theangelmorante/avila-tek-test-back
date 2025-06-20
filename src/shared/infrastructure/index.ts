@@ -13,3 +13,7 @@ export {
 
 // Pipes
 export { ValidationPipe } from './pipes/validation.pipe';
+
+// Security
+export { corsOptions, helmetOptions } from './config/security.config';
+export { SecurityMiddleware } from './middleware/security.middleware';

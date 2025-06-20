@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
 import { Inject, Logger } from '@nestjs/common';
 import { LoginUserCommand } from '../commands/login-user.command';
 import { GetUserByEmailQuery } from '../../../users/application/queries/get-user-by-email.query';
@@ -12,7 +12,7 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
   constructor(
     @Inject(AUTH_SERVICE)
     private readonly authService: IAuthService,
-    private readonly queryBus: any, // QueryBus para ejecutar consultas del módulo Users
+    private readonly queryBus: QueryBus,
   ) {}
 
   async execute(

@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler, CommandBus } from '@nestjs/cqrs';
 import { Inject, Logger } from '@nestjs/common';
 import { RegisterUserCommand } from '../commands/register-user.command';
 import { CreateUserCommand } from '../../../users/application/commands/create-user.command';
@@ -14,7 +14,7 @@ export class RegisterUserHandler
   constructor(
     @Inject(AUTH_SERVICE)
     private readonly authService: IAuthService,
-    private readonly commandBus: any, // CommandBus para ejecutar comandos del módulo Users
+    private readonly commandBus: CommandBus,
   ) {}
 
   async execute(
