@@ -1,6 +1,6 @@
 # Avila Tek E-commerce API
 
-Scalable REST API for an e-commerce platform built with NestJS, TypeScript, and Prisma.
+Scalable REST API for an e-commerce platform built with NestJS (Node + Express), TypeScript, and Prisma.
 
 ## Architecture
 
@@ -808,18 +808,12 @@ src/
 - [x] Controlled public endpoints
 - [x] Resource ownership validation
 
-## Next Steps
+## Suggestions for next steps
 
-1. **Customer Management**: Additional user information
-2. **Tests**: Unit and integration
-3. **Documentation**: Swagger/OpenAPI
-4. **Logging**: Structured logging system
-5. **Monitoring**: Metrics and health checks
-6. **Payments**: Integration with payment gateways
-7. **Notifications**: Email/SMS notification system
-8. **Caching**: Redis implementation for frequent queries
-9. **CDN**: For images and static assets
-10. **Load Balancing**: For traffic distribution
+1. **Notifications**: Email/SMS notification system
+2. **Caching**: Redis implementation for frequent queries
+3. **CDN**: For images and static assets
+4. **Load Balancing**: For traffic distribution
 
 ## Author
 
@@ -829,3 +823,43 @@ src/
 - **Website:** [angel-morante.vercel.app](https://angel-morante.vercel.app/)
 - **LinkedIn:** [Angel Morante](https://www.linkedin.com/in/angel-morante-aa76461a9/)
 - **Twitter:** [@theangelmorante](https://twitter.com/theangelmorante)
+
+## Running Tests
+
+To run all unit tests:
+
+```bash
+yarn test
+```
+
+To run tests with coverage report:
+
+```bash
+yarn test --coverage
+```
+
+The coverage report will be shown in the terminal and a detailed HTML report will be generated in the `coverage/` folder. You can open `coverage/lcov-report/index.html` in your browser for a visual summary.
+
+### Current Coverage Example
+
+```
+File                                         % Stmts % Branch % Funcs % Lines Uncovered Line #s
+All files                                      99.2     100     100   99.09
+ auth/application/handlers/login-user.handler.ts   100     100     100     100
+ auth/application/handlers/register-user.handler.ts 100     100     100     100
+ orders/application/handlers/create-order.handler.ts 100     100     100     100
+ orders/application/handlers/get-order-by-id.handler.ts 100     100     100     100
+ orders/application/handlers/get-user-orders.handler.ts 100     100     100     100
+ orders/application/handlers/update-order-status.handler.ts 100     100     100     100
+ products/application/handlers/create-product.handler.ts 100     100     100     100
+ products/application/handlers/delete-product.handler.ts 100     100     100     100
+ products/application/handlers/get-all-products.handler.ts 87.5     100     100   85.71   36-40
+ products/application/handlers/get-available-products.handler.ts 100     100     100     100
+ products/application/handlers/get-product-by-id.handler.ts 100     100     100     100
+ products/application/handlers/update-product.handler.ts 100     100     100     100
+ users/application/handlers/create-user.handler.ts 100     100     100     100
+ users/application/handlers/get-user-by-email.handler.ts 100     100     100     100
+ users/application/handlers/get-user-by-id.handler.ts 100     100     100     100
+```
+
+All main business logic handlers are covered at nearly 100%.
