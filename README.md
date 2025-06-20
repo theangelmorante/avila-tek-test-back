@@ -72,7 +72,7 @@ Once the database is running and the `.env` file is configured, open a terminal 
 yarn install
 
 # 2. Apply database migrations
-npx prisma migrate deploy
+npx prisma migrate dev
 
 # 3. Generate the Prisma client
 npx prisma generate

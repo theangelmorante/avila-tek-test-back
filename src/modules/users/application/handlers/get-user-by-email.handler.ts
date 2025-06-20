@@ -1,9 +1,9 @@
-import { IQueryHandler } from '@nestjs/cqrs';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Inject } from '@nestjs/common';
 import { GetUserByEmailQuery } from '../queries/get-user-by-email.query';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
 import { USER_REPOSITORY } from '../../domain/tokens';
-
+@QueryHandler(GetUserByEmailQuery)
 export class GetUserByEmailHandler
   implements IQueryHandler<GetUserByEmailQuery>
 {
@@ -23,7 +23,7 @@ export class GetUserByEmailHandler
     return {
       id: user.id,
       email: user.email,
-      password: user.password, // Incluimos password para autenticación
+      password: user.password, // Include password for authentication
       firstName: user.firstName,
       lastName: user.lastName,
       fullName: user.fullName,

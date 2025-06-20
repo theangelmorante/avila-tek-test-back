@@ -7,13 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBody,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { Public } from '../../../../../shared/domain/decorators/public.decorator';
 import { RegisterUserCommand } from '../../../application/commands/register-user.command';
 import { LoginUserCommand } from '../../../application/commands/login-user.command';

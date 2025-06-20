@@ -4,6 +4,7 @@ import { LoginUserCommand } from '../commands/login-user.command';
 import { GetUserByEmailQuery } from '../../../users/application/queries/get-user-by-email.query';
 import { IAuthService } from '../../domain/services/auth.service.interface';
 import { AUTH_SERVICE } from '../../domain/tokens';
+import { UnauthorizedException } from '@nestjs/common';
 
 @CommandHandler(LoginUserCommand)
 export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
@@ -18,43 +19,39 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
   async execute(
     command: LoginUserCommand,
   ): Promise<{ token: string; user: any }> {
-    this.logger.log(
-      `Ejecutando comando LoginUserCommand para email: ${command.email}`,
-    );
+    this.logger.log(`Executing LoginUserCommand for email: ${command.email}`);
 
     try {
       const { email, password } = command;
 
-      // Buscar el usuario por email usando el módulo de Users
+      // Search the user by email using the Users module
       const getUserQuery = new GetUserByEmailQuery(email);
       const user = await this.queryBus.execute(getUserQuery);
 
       if (!user) {
-        this.logger.warn(`Intento de login con email no registrado: ${email}`);
-        throw new Error('Credenciales inválidas');
+        this.logger.warn(`Login attempt with unregistered email: ${email}`);
+        throw new UnauthorizedException('Credenciales inválidas');
       }
 
-      // Verificar si el usuario está activo
+      // Check if the user is active
       if (!user.isActive) {
-        throw new Error('Usuario inactivo');
+        throw new UnauthorizedException('Usuario inactivo');
       }
 
-      // Verificar la contraseña
+      // Check the password
       const isPasswordValid = await this.authService.comparePassword(
         password,
         user.password,
       );
       if (!isPasswordValid) {
-        this.logger.warn(
-          `Intento de login con contraseña incorrecta para: ${email}`,
-        );
-        throw new Error('Credenciales inválidas');
+        this.logger.warn(`Login attempt with incorrect password for: ${email}`);
+        throw new UnauthorizedException('Credenciales inválidas');
       }
 
-      // Generar el token JWT
+      // Generate the JWT token
       const token = await this.authService.generateToken(user);
 
-      this.logger.log(`Login exitoso para usuario: ${user.id}`);
+      this.logger.log(`Login successful for user: ${user.id}`);
 
       return {
         token,
@@ -67,7 +64,7 @@ export class LoginUserHandler implements ICommandHandler<LoginUserCommand> {
         },
       };
     } catch (error) {
-      this.logger.error(`Error al hacer login: ${error.message}`, error.stack);
+      this.logger.error(`Error making login: ${error.message}`, error.stack);
       throw error;
     }
   }

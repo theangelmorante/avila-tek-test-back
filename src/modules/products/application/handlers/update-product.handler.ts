@@ -4,6 +4,7 @@ import { UpdateProductCommand } from '../commands/update-product.command';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@CommandHandler(UpdateProductCommand)
 export class UpdateProductHandler
   implements ICommandHandler<UpdateProductCommand>
 {
@@ -17,13 +18,13 @@ export class UpdateProductHandler
   ): Promise<{ id: string; name: string }> {
     const { id, name, description, price, stock, isActive } = command;
 
-    // Buscar el producto existente
+    // Check if the product exists
     const existingProduct = await this.productRepository.findById(id);
     if (!existingProduct) {
-      throw new NotFoundException('Producto no encontrado');
+      throw new NotFoundException('Product not found');
     }
 
-    // Actualizar el producto
+    // Update the product
     const updatedProduct = existingProduct.update(
       name,
       description,
@@ -32,7 +33,7 @@ export class UpdateProductHandler
       isActive,
     );
 
-    // Guardar el producto actualizado
+    // Save the updated product
     const savedProduct = await this.productRepository.update(updatedProduct);
 
     return {

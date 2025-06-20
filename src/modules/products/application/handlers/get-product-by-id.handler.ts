@@ -4,6 +4,7 @@ import { GetProductByIdQuery } from '../queries/get-product-by-id.query';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@QueryHandler(GetProductByIdQuery)
 export class GetProductByIdHandler
   implements IQueryHandler<GetProductByIdQuery>
 {

@@ -21,16 +21,16 @@ export class RegisterUserHandler
     command: RegisterUserCommand,
   ): Promise<{ id: string; email: string }> {
     this.logger.log(
-      `Ejecutando comando RegisterUserCommand para email: ${command.email}`,
+      `Executing RegisterUserCommand for email: ${command.email}`,
     );
 
     try {
       const { email, password, firstName, lastName } = command;
 
-      // Hashear la contraseña
+      // Hash the password
       const hashedPassword = await this.authService.hashPassword(password);
 
-      // Crear el usuario usando el módulo de Users
+      // Create the user using the Users module
       const createUserCommand = new CreateUserCommand(
         email,
         hashedPassword,
@@ -40,12 +40,12 @@ export class RegisterUserHandler
 
       const result = await this.commandBus.execute(createUserCommand);
 
-      this.logger.log(`Usuario registrado exitosamente: ${result.id}`);
+      this.logger.log(`User registered successfully: ${result.id}`);
 
       return result;
     } catch (error) {
       this.logger.error(
-        `Error al registrar usuario: ${error.message}`,
+        `Error registering user: ${error.message}`,
         error.stack,
       );
       throw error;

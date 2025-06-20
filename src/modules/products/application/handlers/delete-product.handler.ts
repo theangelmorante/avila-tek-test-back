@@ -4,6 +4,7 @@ import { DeleteProductCommand } from '../commands/delete-product.command';
 import { IProductRepository } from '../../domain/repositories/product.repository.interface';
 import { PRODUCT_REPOSITORY } from '../../domain/tokens';
 
+@CommandHandler(DeleteProductCommand)
 export class DeleteProductHandler
   implements ICommandHandler<DeleteProductCommand>
 {
@@ -15,13 +16,13 @@ export class DeleteProductHandler
   async execute(command: DeleteProductCommand): Promise<void> {
     const { id } = command;
 
-    // Verificar si el producto existe
+    // Check if the product exists
     const exists = await this.productRepository.existsById(id);
     if (!exists) {
-      throw new NotFoundException('Producto no encontrado');
+      throw new NotFoundException('Product not found');
     }
 
-    // Eliminar el producto
+    // Delete the product
     await this.productRepository.delete(id);
   }
 }

@@ -21,44 +21,40 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
 
   async execute(command: CreateOrderCommand) {
     this.logger.log(
-      `Ejecutando comando CreateOrderCommand para usuario: ${command.userId} con ${command.items.length} productos`,
+      `Executing CreateOrderCommand for user: ${command.userId} with ${command.items.length} products`,
     );
 
     try {
       const { userId, items } = command;
 
-      // Validar que todos los productos existan y tengan stock suficiente
+      // Check if all products exist and have enough stock
       const orderItems: OrderItem[] = [];
       let totalAmount = 0;
 
       for (const item of items) {
         this.logger.debug(
-          `Validando producto: ${item.productId} - Cantidad: ${item.quantity}`,
+          `Checking product: ${item.productId} - Quantity: ${item.quantity}`,
         );
 
         const product = await this.productRepository.findById(item.productId);
         if (!product) {
-          this.logger.warn(`Producto no encontrado: ${item.productId}`);
-          throw new Error(`Producto con ID ${item.productId} no encontrado`);
+          this.logger.warn(`Product not found: ${item.productId}`);
+          throw new Error(`Product with ID ${item.productId} not found`);
         }
 
         if (!product.isActive) {
-          this.logger.warn(`Producto inactivo: ${item.productId}`);
-          throw new Error(
-            `Producto con ID ${item.productId} no está disponible`,
-          );
+          this.logger.warn(`Product inactive: ${item.productId}`);
+          throw new Error(`Product with ID ${item.productId} is not available`);
         }
 
         if (product.stock < item.quantity) {
           this.logger.warn(
-            `Stock insuficiente para producto: ${item.productId} - Stock: ${product.stock}, Solicitado: ${item.quantity}`,
+            `Insufficient stock for product: ${item.productId} - Stock: ${product.stock}, Requested: ${item.quantity}`,
           );
-          throw new Error(
-            `Stock insuficiente para el producto ${product.name}`,
-          );
+          throw new Error(`Insufficient stock for product ${product.name}`);
         }
 
-        // Crear el item del pedido
+        // Create the order item
         const orderItem = OrderItem.create(
           item.productId,
           product.name,
@@ -69,23 +65,23 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
         orderItems.push(orderItem);
         totalAmount += product.price * item.quantity;
 
-        // Actualizar el stock del producto
+        // Update the product stock
         product.updateStock(product.stock - item.quantity);
         await this.productRepository.save(product);
 
         this.logger.debug(
-          `Stock actualizado para producto: ${item.productId} - Nuevo stock: ${product.stock}`,
+          `Stock updated for product: ${item.productId} - New stock: ${product.stock}`,
         );
       }
 
-      // Crear el pedido
-      const order = Order.create(userId, orderItems);
+      // Create the order
+      const order = Order.create(userId, orderItems, totalAmount);
 
-      // Guardar el pedido
+      // Save the order
       const savedOrder = await this.orderRepository.save(order);
 
       this.logger.log(
-        `Pedido creado exitosamente: ${savedOrder.id} - Total: $${savedOrder.totalAmount}`,
+        `Order created successfully: ${savedOrder.id} - Total: $${savedOrder.totalAmount}`,
       );
 
       return {
@@ -93,7 +89,7 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
         totalAmount: savedOrder.totalAmount,
       };
     } catch (error) {
-      this.logger.error(`Error al crear pedido: ${error.message}`, error.stack);
+      this.logger.error(`Error creating order: ${error.message}`, error.stack);
       throw error;
     }
   }
