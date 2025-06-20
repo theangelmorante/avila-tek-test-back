@@ -190,7 +190,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"items\": [\n    { \"productId\": \"cmc4ygkdi0000y4nxenihum5d\", \"quantity\": 7 }\n  ]\n}"
+					"raw": "{\n  \"items\": [\n    { \"productId\": \"cmc4ygkdi0000y4nxenihum5d\", \"quantity\": 1 }\n  ]\n}"
 				},
 				"url": {
 					"raw": "{{host}}/orders",
@@ -225,6 +225,157 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Products - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"price\": 200.99,\n  \"stock\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/products/cmc4ytixx000ay4m1iq5gv6q8",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products",
+						"cmc4ytixx000ay4m1iq5gv6q8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/products/cmc4yhl0y0000y40dqlbrxvzb",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"products",
+						"cmc4yhl0y0000y40dqlbrxvzb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/orders/cmc4ytiy7000cy4m1qaut6p84",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders",
+						"cmc4ytiy7000cy4m1qaut6p84"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Orders - Update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"CANCELLED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/orders/cmc4z1tz90005y4sp0k1kuoa9/status",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"orders",
+						"cmc4z1tz90005y4sp0k1kuoa9",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
