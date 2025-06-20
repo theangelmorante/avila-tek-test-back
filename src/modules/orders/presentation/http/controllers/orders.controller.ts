@@ -47,20 +47,20 @@ export class OrdersController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
-    summary: 'Crear un nuevo pedido',
-    description: 'Crea un nuevo pedido con los productos especificados',
+    summary: 'Create a new order',
+    description: 'Create a new order with the specified products',
   })
   @ApiBody({
     type: CreateOrderDto,
-    description: 'Datos del pedido a crear',
+    description: 'Data of the order to create',
   })
   @ApiResponse({
     status: 201,
-    description: 'Pedido creado exitosamente',
+    description: 'Order created successfully',
   })
   @ApiResponse({
     status: 400,
-    description: 'Datos de entrada inválidos o stock insuficiente',
+    description: 'Invalid input data or insufficient stock',
   })
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
@@ -85,22 +85,22 @@ export class OrdersController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener historial de pedidos del usuario',
+    summary: 'Get user order history',
     description:
-      'Obtiene una lista paginada de todos los pedidos del usuario autenticado',
+      'Get a paginated list of all orders for the authenticated user',
   })
   @ApiQuery({
     name: 'page',
     required: false,
     type: Number,
-    description: 'Número de página',
+    description: 'Page number',
     example: 1,
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
-    description: 'Elementos por página',
+    description: 'Elements per page',
     example: 10,
   })
   @ApiResponse({
@@ -143,7 +143,7 @@ export class OrdersController {
   })
   @ApiParam({
     name: 'id',
-    description: 'Order ID',
+    description: 'Order ID to get',
     example: 'clxabcdef1234',
   })
   @ApiResponse({
@@ -152,7 +152,7 @@ export class OrdersController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Order not found',
+    description: 'Order not found or user does not have access',
   })
   async getOrderById(
     @Param('id') id: string,
@@ -184,9 +184,13 @@ export class OrdersController {
   @ApiResponse({ status: 200, description: 'Order updated successfully' })
   @ApiResponse({
     status: 400,
-    description: 'Invalid data, lack of stock or the order cannot be modified',
+    description:
+      'Invalid data, lack of stock or the order cannot be modified or user does not have access',
   })
-  @ApiResponse({ status: 404, description: 'Order or product not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'Order or product not found or user does not have access',
+  })
   async updateOrderItems(
     @Param('id') id: string,
     @Body() updateDto: UpdateOrderItemsDto,

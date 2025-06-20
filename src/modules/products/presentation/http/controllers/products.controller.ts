@@ -45,20 +45,20 @@ export class ProductsController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({
-    summary: 'Crear un nuevo producto',
-    description: 'Crea un nuevo producto en el inventario',
+    summary: 'Create a new product',
+    description: 'Create a new product in the inventory',
   })
   @ApiBody({
     type: CreateProductDto,
-    description: 'Datos del producto a crear',
+    description: 'Data of the product to create',
   })
   @ApiResponse({
     status: 201,
-    description: 'Producto creado exitosamente',
+    description: 'Product created successfully',
   })
   @ApiResponse({
     status: 400,
-    description: 'Datos de entrada inválidos',
+    description: 'Invalid input data',
   })
   async createProduct(@Body() createProductDto: CreateProductDto) {
     this.logger.log(`Creating product: ${createProductDto.name}`);
@@ -83,40 +83,38 @@ export class ProductsController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener todos los productos',
-    description: 'Obtiene una lista paginada de todos los productos',
+    summary: 'Get all products',
+    description: 'Get a paginated list of all products',
   })
   @ApiQuery({
     name: 'includeInactive',
     required: false,
     type: Boolean,
-    description: 'Incluir productos inactivos',
+    description: 'Include inactive products',
   })
   @ApiQuery({
     name: 'page',
     required: false,
     type: Number,
-    description: 'Número de página',
+    description: 'Page number',
     example: 1,
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
-    description: 'Elementos por página',
+    description: 'Elements per page',
     example: 10,
   })
   @ApiResponse({
     status: 200,
-    description: 'Productos obtenidos exitosamente',
+    description: 'Products obtained successfully',
   })
   async getAllProducts(
     @Query('includeInactive') includeInactive?: string,
     @Query() paginationDto?: PaginationDto,
   ) {
-    this.logger.log(
-      `Obteniendo productos (página: ${paginationDto?.page || 1})`,
-    );
+    this.logger.log(`Getting products (page: ${paginationDto?.page || 1})`);
 
     const query = new GetAllProductsQuery(
       includeInactive === 'true',
@@ -139,22 +137,21 @@ export class ProductsController {
   @Get('available')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener productos disponibles',
-    description:
-      'Obtiene una lista paginada de productos activos con stock > 0',
+    summary: 'Get available products',
+    description: 'Get a paginated list of active products with stock > 0',
   })
   @ApiQuery({
     name: 'page',
     required: false,
     type: Number,
-    description: 'Número de página',
+    description: 'Page number',
     example: 1,
   })
   @ApiQuery({
     name: 'limit',
     required: false,
     type: Number,
-    description: 'Elementos por página',
+    description: 'Elements per page',
     example: 10,
   })
   @ApiResponse({
@@ -186,12 +183,12 @@ export class ProductsController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Obtener producto por ID',
-    description: 'Obtiene un producto específico por su ID',
+    summary: 'Get product by ID',
+    description: 'Get a specific product by its ID',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del producto',
+    description: 'Product ID',
     example: 'clx1234567890',
   })
   @ApiResponse({
@@ -219,17 +216,17 @@ export class ProductsController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Actualizar producto',
-    description: 'Actualiza un producto existente',
+    summary: 'Update product',
+    description: 'Update an existing product',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del producto',
+    description: 'Product ID',
     example: 'clx1234567890',
   })
   @ApiBody({
     type: UpdateProductDto,
-    description: 'Datos del producto a actualizar',
+    description: 'Data of the product to update',
   })
   @ApiResponse({
     status: 200,
@@ -267,12 +264,12 @@ export class ProductsController {
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Eliminar producto',
-    description: 'Elimina un producto del inventario',
+    summary: 'Delete product',
+    description: 'Delete a product from the inventory',
   })
   @ApiParam({
     name: 'id',
-    description: 'ID del producto',
+    description: 'Product ID',
     example: 'clx1234567890',
   })
   @ApiResponse({
