@@ -824,7 +824,62 @@ src/
 - **LinkedIn:** [Angel Morante](https://www.linkedin.com/in/angel-morante-aa76461a9/)
 - **Twitter:** [@theangelmorante](https://twitter.com/theangelmorante)
 
-## Running Tests
+## 🚀 Postman Collection
+
+This project includes a Postman collection to easily test all API endpoints.
+
+- **File**: `AvilaTek E-commerce API.postman_collection.json`
+- **How to use**:
+  1.  Import the file into your Postman client.
+  2.  The collection uses a `{{host}}` variable, which is pre-configured to `http://localhost:3000`.
+  3.  Run the `Auth - Register` and `Auth - Login` requests first. The login request will automatically save the JWT to a collection variable `{{jwt}}` so you can make authenticated requests seamlessly.
+  4.  Remember to replace placeholders like `<REPLACE_WITH_PRODUCT_ID>` in URLs or bodies with actual IDs from your database.
+
+---
+
+## 📖 API Endpoints
+
+Here is a summary of the available endpoints:
+
+### Auth
+
+| Method | Endpoint         | Description          |
+| :----- | :--------------- | :------------------- |
+| `POST` | `/auth/register` | Register a new user. |
+| `POST` | `/auth/login`    | Login and get a JWT. |
+
+### Users
+
+| Method | Endpoint         | Description                           |
+| :----- | :--------------- | :------------------------------------ |
+| `GET`  | `/users/profile` | Get the authenticated user's profile. |
+| `GET`  | `/users/:id`     | Get a user by their ID.               |
+
+### Products
+
+| Method   | Endpoint              | Description                                 |
+| :------- | :-------------------- | :------------------------------------------ |
+| `POST`   | `/products`           | Create a new product.                       |
+| `GET`    | `/products`           | Get a paginated list of all products.       |
+| `GET`    | `/products/available` | Get available products (active & in stock). |
+| `GET`    | `/products/:id`       | Get a product by its ID.                    |
+| `PUT`    | `/products/:id`       | Update an existing product.                 |
+| `DELETE` | `/products/:id`       | Delete a product.                           |
+
+### Orders
+
+| Method   | Endpoint             | Description                                     |
+| :------- | :------------------- | :---------------------------------------------- |
+| `POST`   | `/orders`            | Create a new order.                             |
+| `GET`    | `/orders`            | Get the authenticated user's order history.     |
+| `GET`    | `/orders/:id`        | Get a specific order by its ID.                 |
+| `PUT`    | `/orders/:id`        | Update the items of an existing order.          |
+| `PUT`    | `/orders/:id/status` | Update the status of an order.                  |
+| `DELETE` | `/orders/:id`        | Cancel an order (sets its status to CANCELLED). |
+
+---
+
+## 🧪 Running Tests
 
 To run all unit tests:
 
