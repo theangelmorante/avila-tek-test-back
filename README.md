@@ -106,7 +106,6 @@ Here is a summary of the available endpoints:
 
 | Method | Endpoint         | Description                           |
 | :----- | :--------------- | :------------------------------------ |
-| `GET`  | `/users/profile` | Get the authenticated user's profile. |
 | `GET`  | `/users/:id`     | Get a user by their ID.               |
 
 ### Products
